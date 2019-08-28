@@ -1,4 +1,4 @@
-package com.ikem.nwodo.cryptonyte;
+package com.ikem.nwodo.cryptonyte.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

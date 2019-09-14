@@ -3,17 +3,16 @@ package com.ikem.nwodo.cryptonyte.ui.list
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.ikem.nwodo.cryptonyte.R
 import com.ikem.nwodo.cryptonyte.databinding.CoinListFragmentBinding
+import com.ikem.nwodo.cryptonyte.network.api.CoinService
 import com.ikem.nwodo.cryptonyte.ui.CoinListAdapter
 import com.ikem.nwodo.cryptonyte.utils.CoinClickListener
 import dagger.android.support.DaggerFragment
@@ -36,6 +35,9 @@ class CoinListFragment : DaggerFragment(), CoinClickListener{
 
     lateinit var binding: CoinListFragmentBinding
 
+    @Inject
+    lateinit var coinService: CoinService
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.coin_list_fragment, container, false)
@@ -47,7 +49,7 @@ class CoinListFragment : DaggerFragment(), CoinClickListener{
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoinListViewModel::class.java)
 
-        binding.lifecycleOwner = this
+         binding.lifecycleOwner = this
         binding.coinListRecycler.layoutManager = LinearLayoutManager(context)
         val coinAdapter = CoinListAdapter(this)
 

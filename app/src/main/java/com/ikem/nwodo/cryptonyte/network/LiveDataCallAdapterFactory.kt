@@ -2,6 +2,7 @@ package com.ikem.nwodo.cryptonyte.network
 
 import androidx.lifecycle.LiveData
 import com.ikem.nwodo.cryptonyte.network.api.ApiResponse
+import com.ikem.nwodo.cryptonyte.utils.Resource
 import retrofit2.CallAdapter
 import retrofit2.CallAdapter.Factory
 import retrofit2.Retrofit
@@ -19,7 +20,7 @@ class LiveDataCallAdapterFactory : Factory() {
         }
         val observableType = getParameterUpperBound(0, returnType as ParameterizedType)
         val rawObservableType = getRawType(observableType)
-        if (rawObservableType != ApiResponse::class.java) {
+        if (rawObservableType != Resource::class.java) {
             throw IllegalArgumentException("type must be a resource")
         }
         if (observableType !is ParameterizedType) {

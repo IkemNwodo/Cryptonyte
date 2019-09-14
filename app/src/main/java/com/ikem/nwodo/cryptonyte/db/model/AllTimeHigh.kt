@@ -1,4 +1,4 @@
-package com.ikem.nwodo.cryptonyte.model
+package com.ikem.nwodo.cryptonyte.db.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -14,5 +14,5 @@ class AllTimeHigh {
      var price : String? = null
     @SerializedName("timestamp")
     @Expose
-    var timestamp : Int? = null
+    var timestamp : Long = 0L
 }

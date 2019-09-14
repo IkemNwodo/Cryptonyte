@@ -1,6 +1,5 @@
-package com.ikem.nwodo.cryptonyte.model
+package com.ikem.nwodo.cryptonyte.db.model
 
-import androidx.room.Entity
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 

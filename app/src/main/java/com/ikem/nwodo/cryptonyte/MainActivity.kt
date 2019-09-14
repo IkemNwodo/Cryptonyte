@@ -7,7 +7,7 @@ import dagger.android.support.DaggerAppCompatActivity
 
 class MainActivity : DaggerAppCompatActivity() {
 
-    private var mTextMessage: TextView? = null
+    /**private var mTextMessage: TextView? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -26,14 +26,14 @@ class MainActivity : DaggerAppCompatActivity() {
         }
         false
     }
-
+*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mTextMessage = findViewById(R.id.message)
+        //mTextMessage = findViewById(R.id.message)
         val navigation = findViewById<BottomNavigationView>(R.id.navigation)
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
 }

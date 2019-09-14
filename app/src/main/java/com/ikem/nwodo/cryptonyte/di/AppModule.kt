@@ -20,9 +20,12 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.ikem.nwodo.cryptonyte.network.RequestInterceptor
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 
 @Module
 class AppModule {
+
+
 
     @Singleton
     @Provides
@@ -32,13 +35,14 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(LiveDataCallAdapterFactory())
                 .client(okHttpClient)
                 .build()
+
     }
 
     @Singleton

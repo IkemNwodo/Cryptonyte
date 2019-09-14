@@ -1,8 +1,7 @@
-package com.ikem.nwodo.cryptonyte.model
+package com.ikem.nwodo.cryptonyte.db.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.ikem.nwodo.cryptonyte.model.Data
 
 class Result {
 

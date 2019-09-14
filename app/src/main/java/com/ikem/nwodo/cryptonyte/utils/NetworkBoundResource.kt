@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import com.ikem.nwodo.cryptonyte.network.api.ApiResponse
+import io.reactivex.Single
 
 
 abstract class NetworkBoundResource<ResultType, RequestType>
@@ -42,27 +43,26 @@ abstract class NetworkBoundResource<ResultType, RequestType>
         result.addSource(dbSource) { newData ->
             setValue(Resource.loading(newData))
         }
+
         result.addSource(apiResponse) { response ->
             result.removeSource(apiResponse)
             result.removeSource(dbSource)
-            if (response.isSuccessful){
-                appExecutors.diskIO().execute {
-                    response.body?.let { saveCallResult(it) }
-                }
-                appExecutors.mainThread().execute {
-                    // we specially request a new live data,
-                    // otherwise we will get immediately last cached value,
-                    // which may not be updated with latest results received from network.
-                    result.addSource(loadFromDb()) { newData ->
-                        setValue(Resource.success(newData))
-                    }
-                }
 
-            }
-            else {
-                onFetchFailed()
-                result.addSource(dbSource){ newData ->
-                    setValue(Resource.error(response.error?.message, newData))
+            response?.apply {
+                if (status.isSuccessful()) {
+                    appExecutors.diskIO().execute {
+                        data?.let { saveCallResult(it) }
+
+                        appExecutors.mainThread().execute {
+                            // we specially request a new live data,
+                            // otherwise we will get immediately last cached value,
+                            // which may not be updated with latest results received from network.
+                            result.addSource(loadFromDb()) { newData -> setValue(Resource.success(newData)) }
+                        }
+                    }
+                } else {
+                    onFetchFailed()
+                    result.addSource(dbSource) { result.setValue(Resource.error(message)) }
                 }
             }
         }
@@ -83,5 +83,5 @@ abstract class NetworkBoundResource<ResultType, RequestType>
     protected abstract fun loadFromDb(): LiveData<ResultType>
 
     @MainThread
-    protected abstract fun createCall(): LiveData<ApiResponse<RequestType>>
+    protected abstract fun createCall(): LiveData<Resource<RequestType>>
 }

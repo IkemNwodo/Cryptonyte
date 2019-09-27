@@ -7,4 +7,6 @@ import javax.inject.Inject
 class CoinListViewModel @Inject constructor(private val coinListRepository: CoinListRepository): ViewModel() {
 
     fun loadCoins() = coinListRepository.loadCoins()
+
+    fun loadCoinHistory(id: Int) = coinListRepository.fetchCoinHistory(id)
 }

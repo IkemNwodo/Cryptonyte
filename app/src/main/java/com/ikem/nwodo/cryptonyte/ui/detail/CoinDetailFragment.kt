@@ -37,7 +37,8 @@ class CoinDetailFragment : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoinDetailViewModel::class.java)
-        // TODO: Use the ViewModel
+
+        binding.lifecycleOwner = viewLifecycleOwner
 
 
     }

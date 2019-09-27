@@ -1,20 +1,29 @@
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="com.ikem.nwodo.cryptonyte.utils.graph.NumberFormatter" />
+        <import type="com.ikem.nwodo.cryptonyte.db.model.History" />
+        <import type="java.util.List" />
+
         <variable
             name="coin"
             type="com.ikem.nwodo.cryptonyte.db.model.Coin" />
+        <variable
+            name="coinHistory"
+            type="List&lt;History>" />
+
     </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        app:cardUseCompatPadding="true"
+        android:layout_height="250dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="5dp"
-        app:cardElevation="10dp">
+        app:cardElevation="10dp"
+        app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,11 +33,12 @@
             <ImageView
                 android:id="@+id/coin_avatar2"
                 android:layout_width="wrap_content"
-                android:layout_height="26dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:scaleType="fitCenter"
                 android:src='@{String.valueOf(coin.change).startsWith("-") ? @drawable/ic_coin_downward : @drawable/ic_coin_upward }'
+                app:layout_constraintBottom_toBottomOf="@+id/coin_change"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/coin_price"
                 tools:srcCompat="@drawable/ic_coin_upward" />
@@ -54,9 +64,9 @@
                 android:layout_height="28dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
+                android:text="@{NumberFormatter.priceFormatter(coin.price)}"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:formattedText="@{coin.price}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="$4000" />
@@ -65,71 +75,63 @@
                 android:id="@+id/coin_change"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginBottom="8dp"
                 android:maxLines="1"
                 android:text="@{String.valueOf(coin.change) + '%'}"
                 android:textColor='@{String.valueOf(coin.change).startsWith("-") ? @color/textColorRed : @color/textColorGreen}'
-                android:textSize="18sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/coin_avatar2"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintHorizontal_bias="0.894"
+                app:layout_constraintStart_toEndOf="@+id/coin_graph"
                 app:layout_constraintTop_toBottomOf="@+id/coin_price"
-                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_bias="0.007"
                 tools:text="3%" />
-
-            <TextView
-                android:id="@+id/coin_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:maxLines="2"
-                android:text="@{coin.name}"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/coin_avatar"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="BTC" />
-
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/coin_graph"
-                android:layout_width="292dp"
-                android:layout_height="64dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="72dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_end="204dp" />
 
             <TextView
                 android:id="@+id/coin_symbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:maxLines="2"
                 android:text="@{coin.symbol}"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBaseline_toBaselineOf="@+id/coin_price"
                 app:layout_constraintStart_toEndOf="@+id/coin_avatar"
-                app:layout_constraintTop_toBottomOf="@+id/coin_name"
-                tools:text="Bitcoin" />
+                tools:text="BTC" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2"
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/coin_graph"
+                android:layout_width="297dp"
+                android:layout_height="76dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="92dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:setChartData="@{coinHistory}"/>
+
+            <TextView
+                android:id="@+id/coin_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_begin="303dp" />
+                android:layout_marginStart="16dp"
+                android:text="@{NumberFormatter.coinNameFormatter(coin.name)}"
+                app:layout_constraintBaseline_toBaselineOf="@+id/coin_change"
+                app:layout_constraintStart_toEndOf="@+id/coin_avatar"
+                tools:text="Bitcoin" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="left" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -19,7 +19,7 @@ data class Coin(
         @PrimaryKey
         @SerializedName("id")
         @Expose
-        val id: Long,
+        val id: Int,
 
         @SerializedName("uuid")
         @Expose

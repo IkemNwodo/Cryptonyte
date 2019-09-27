@@ -10,7 +10,7 @@ data class Data(
 
         @SerializedName("coins")
         @Expose
-        val coins: List<Coin>,
+        val coins: List<Coin>?,
 
         @SerializedName("history")
         @Expose

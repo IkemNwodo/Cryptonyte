@@ -4,6 +4,7 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
 
+
 object NumberFormatter {
 
     fun currencyFormatter(input: Long): String {
@@ -16,8 +17,18 @@ object NumberFormatter {
         return nf.format(input.toInt().toLong())
     }
 
+    @JvmStatic
     fun priceFormatter(input: String): String {
-        val nf = DecimalFormat.getNumberInstance()
+        val nf = DecimalFormat("##,###.00")
         return nf.format(input.toDouble())
+    }
+
+    @JvmStatic
+    fun coinNameFormatter(input: String): String {
+        return if (input.contains(' ')) {
+            input.replace(' ', '\n')
+        } else {
+            input
+        }
     }
 }

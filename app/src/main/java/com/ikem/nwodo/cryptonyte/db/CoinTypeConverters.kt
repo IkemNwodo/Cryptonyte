@@ -42,8 +42,8 @@ object CoinTypeConverters {
     @TypeConverter
     @JvmStatic
     fun jsonToListCoin(value: String): List<Coin>?{
-        val objects = Gson().fromJson(value, Array<Coin>::class.java) as Array<Coin>
-        return objects.toList()
+        val objects = Gson().fromJson(value, Array<Coin>::class.java) as Array<Coin>?
+        return objects?.toList()
     }
 
     @TypeConverter

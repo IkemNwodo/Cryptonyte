@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="com.ikem.nwodo.cryptonyte.utils.Resource" />
+
+        <import type="java.util.List" />
+
+        <import type="com.ikem.nwodo.cryptonyte.db.model.Coin" />
+
+        <import type="com.ikem.nwodo.cryptonyte.utils.Status" />
+
+        <import type="android.view.View" />
+
+
+        <variable
+            name="resource"
+            type="Resource&lt;List&lt;Coin>>" />
 
     </data>
 
@@ -12,18 +27,38 @@
         android:layout_height="match_parent"
         tools:context=".ui.list.CoinListFragment">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/coinList_recycler"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="15dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp"
-            tools:listitem="@layout/card" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/coinList_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/coin_list_spacing"
+                android:paddingEnd="@dimen/coin_list_spacing"
+                app:layout_constraintBottom_toBottomOf="@id/swipe_refresh"
+                app:layout_constraintEnd_toEndOf="@id/swipe_refresh"
+                app:layout_constraintStart_toStartOf="@id/swipe_refresh"
+                app:layout_constraintTop_toTopOf="@id/swipe_refresh"
+                tools:listitem="@layout/coin_list_rv_card" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="@{resource.status == Status.LOADING ? View.VISIBLE : View.GONE}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

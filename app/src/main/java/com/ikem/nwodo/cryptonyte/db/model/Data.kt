@@ -21,6 +21,8 @@ data class Data(
         val change: Double,
 
         @PrimaryKey(autoGenerate = true)
-        val historyId: Int
+        var historyId: Int,
+
+        var timeFrame: String
 )
 

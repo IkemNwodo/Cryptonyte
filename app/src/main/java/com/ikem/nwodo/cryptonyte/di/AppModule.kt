@@ -1,6 +1,7 @@
 package com.ikem.nwodo.cryptonyte.di
 
 import android.app.Application
+import android.content.Context
 
 import androidx.room.Room
 
@@ -26,6 +27,11 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 class AppModule {
 
 
+    @Singleton
+    @Provides
+    fun provideContext(application: Application): Context{
+        return application
+    }
 
     @Singleton
     @Provides

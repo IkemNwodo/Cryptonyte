@@ -1,4 +1,4 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -17,12 +17,10 @@
 
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        app:cardBackgroundColor="@android:color/white"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="10dp"
+        android:layout_height="200dp"
+        style="@style/Widget.MaterialComponents.CardView"
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,15 +45,15 @@
                 android:id="@+id/coin_avatar"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="2dp"
                 android:contentDescription="@string/coinimage"
                 android:scaleType="fitCenter"
                 app:imageResource="@{coin.iconUrl}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.14" />
+                app:layout_constraintVertical_bias="0.09" />
 
 
             <TextView
@@ -96,12 +94,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
                 android:maxLines="2"
                 android:text="@{coin.symbol}"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/coin_price"
                 app:layout_constraintStart_toEndOf="@+id/coin_avatar"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="BTC" />
 
             <com.github.mikephil.charting.charts.LineChart
@@ -115,7 +114,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:setChartData="@{coinHistory}"/>
+                app:setChartData="@{coinHistory}"
+                app:chartBackground="@{coin.color}"/>
 
             <TextView
                 android:id="@+id/coin_name"
@@ -135,5 +135,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

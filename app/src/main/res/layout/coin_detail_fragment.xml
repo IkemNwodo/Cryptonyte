@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.ikem.nwodo.cryptonyte.utils.graph.NumberFormatter" />
+
         <variable
             name="coinHistory"
             type="com.ikem.nwodo.cryptonyte.db.model.History" />
@@ -23,158 +25,151 @@
         <ImageView
             android:id="@+id/coin_change_arrow"
             android:layout_width="wrap_content"
-            android:layout_height="26dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="24dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
             android:src='@{String.valueOf(coin.change).startsWith("-") ? @drawable/ic_coin_downward : @drawable/ic_coin_upward }'
-            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintBottom_toBottomOf="@+id/coin_change"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/coin_change"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView"
-            app:layout_constraintVertical_bias="0.869"
+            app:layout_constraintTop_toBottomOf="@+id/coin_price"
             tools:src="@drawable/ic_coin_upward" />
 
-        <Button
-            android:id="@+id/year_history"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggle_button_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            app:checkedButton="@id/day_history"
             app:layout_constraintBottom_toTopOf="@id/lineChart"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/month_history"
-            app:layout_constraintTop_toTopOf="@+id/guideline3"
-            tools:text="YEAR" />
-
-        <Button
-            android:id="@+id/day_history"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/week_history"
-            app:layout_constraintEnd_toStartOf="@+id/week_history"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="DAY" />
+            app:layout_constraintTop_toTopOf="@id/guideline3"
+            app:singleSelection="true">
 
-        <Button
-            android:id="@+id/week_history"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/month_history"
-            app:layout_constraintEnd_toStartOf="@+id/month_history"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/day_history"
-            tools:text="WEEK" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/day_history"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/day" />
 
-        <Button
-            android:id="@+id/month_history"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/year_history"
-            app:layout_constraintEnd_toStartOf="@+id/year_history"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/week_history"
-            tools:text="MONTH" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/week_history"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/week" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/month_history"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/month" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/year_history"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/year" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_width="404dp"
-            android:layout_height="91dp"
+            android:layout_width="0dp"
+            android:layout_height="90dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toTopOf="@+id/coin_symbol"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/coin_detail_rv_card" />
 
         <ImageView
             android:id="@+id/coin_logo"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
             app:imageResource="@{coin.iconUrl}"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
         <TextView
-            android:id="@+id/coin_name"
+            android:id="@+id/coin_symbol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:textSize="30sp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@{coin.symbol}"
-            app:layout_constraintEnd_toEndOf="@+id/coin_symbol"
-            app:layout_constraintStart_toStartOf="@+id/coin_symbol"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toTopOf="@+id/coin_name"
+            app:layout_constraintStart_toEndOf="@+id/coin_logo"
             app:layout_constraintTop_toBottomOf="@+id/recyclerView"
             tools:text="BTC" />
 
         <TextView
-            android:id="@+id/coin_symbol"
+            android:id="@+id/coin_name"
             android:layout_width="wrap_content"
-            android:layout_height="15dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="@{coin.name}"
-            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="24dp"
+            android:text="@{NumberFormatter.coinNameFormatter(coin.name)}"
+            app:layout_constraintBottom_toTopOf="@id/guideline3"
             app:layout_constraintStart_toEndOf="@+id/coin_logo"
-            app:layout_constraintTop_toBottomOf="@id/coin_name"
+            app:layout_constraintTop_toBottomOf="@+id/coin_symbol"
             tools:text="Bitcoin" />
 
         <TextView
             android:id="@+id/coin_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:text="@{coin.price}"
+            android:text="@{NumberFormatter.priceFormatter(coin.price)}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/coin_symbol"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView"
             tools:text="$4702" />
 
         <TextView
             android:id="@+id/coin_change"
             android:layout_width="wrap_content"
-            android:layout_height="26dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:textSize="24sp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:text="@{String.valueOf(coin.change) + '%'}"
             android:textColor='@{String.valueOf(coin.change).startsWith("-") ? @color/textColorRed : @color/textColorGreen}'
-            app:layout_constraintBottom_toTopOf="@+id/guideline3"
-            app:layout_constraintEnd_toStartOf="@id/coin_change_arrow"
-            app:layout_constraintStart_toStartOf="@+id/coin_price"
-            app:layout_constraintTop_toBottomOf="@+id/coin_price"
-            app:layout_constraintVertical_bias="0.0"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/coin_name"
+            app:layout_constraintEnd_toStartOf="@+id/coin_change_arrow"
             tools:text="3%" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart"
-            android:layout_width="390dp"
-            android:layout_height="411dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="64dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toggle_button_group"
+            app:setChartData="@{historyData.coinHistory}" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="203dp" />
+            app:layout_constraintGuide_begin="239dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

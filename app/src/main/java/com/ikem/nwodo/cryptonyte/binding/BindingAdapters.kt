@@ -1,5 +1,6 @@
 package com.ikem.nwodo.cryptonyte.binding
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.PictureDrawable
@@ -10,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
@@ -22,18 +22,22 @@ import com.ikem.nwodo.cryptonyte.R
 import com.ikem.nwodo.cryptonyte.db.model.History
 import com.ikem.nwodo.cryptonyte.utils.graph.MyXAxisValueFormatter
 import com.ikem.nwodo.cryptonyte.utils.graph.MyYAxisValueFormatter
-import com.ikem.nwodo.cryptonyte.utils.graph.NumberFormatter
 import com.ikem.nwodo.cryptonyte.utils.svg.SvgSoftwareLayerSetter
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import java.text.DecimalFormat
 import java.util.*
+import java.util.concurrent.Callable
 import kotlin.collections.ArrayList
 
 object BindingAdapters {
 
 
     @JvmStatic
-    @BindingAdapter("imageBackground")
-    fun setImageViewBackground(imageView: ImageView, coinColor: String?){
-        val drawable = ContextCompat.getDrawable(imageView.context, R.drawable.coin_icon_drawable)
+    @BindingAdapter("chartBackground")
+    fun setChartBackground(lineChart: LineChart, coinColor: String?){
+        val drawable = ContextCompat.getDrawable(lineChart.context, R.drawable.coin_icon_drawable)
 
         val gradientDrawable = drawable as GradientDrawable
         if (coinColor?.length == 4 || coinColor == null){
@@ -43,7 +47,7 @@ object BindingAdapters {
             gradientDrawable.setStroke(4, Color.parseColor(coinColor))
             gradientDrawable.setColor(Color.parseColor(coinColor))
         }
-        imageView.background = gradientDrawable
+        lineChart.background = gradientDrawable
 
     }
 
@@ -60,6 +64,7 @@ object BindingAdapters {
     }
 
 
+    @SuppressLint("CheckResult")
     @JvmStatic
     @BindingAdapter("app:setChartData")
     fun setChartData(lineChart: LineChart, coinHistory: List<History>?){
@@ -67,18 +72,18 @@ object BindingAdapters {
         lineChart.description.isEnabled = false
 
         // enable touch gestures
-        lineChart.setTouchEnabled(true)
+        lineChart.setTouchEnabled(false)
 
         lineChart.dragDecelerationFrictionCoef = 0.9f
 
         // enable scaling and dragging
-        lineChart.isDragEnabled = true
-        lineChart.setScaleEnabled(true)
+        lineChart.isDragEnabled = false
+        lineChart.setScaleEnabled(false)
         lineChart.setDrawGridBackground(false)
-        lineChart.isHighlightPerDragEnabled = true
+        lineChart.isHighlightPerDragEnabled = false
 
 
-        lineChart.setBackgroundColor(Color.WHITE)
+        lineChart.setBackgroundColor(ContextCompat.getColor(lineChart.context, R.color.colorAccentDark))
         lineChart.setViewPortOffsets(0f, 0f, 0f, 0f)
 
         val  l = lineChart.legend
@@ -111,7 +116,14 @@ object BindingAdapters {
         val rightAxis = lineChart.axisRight
         rightAxis.isEnabled = false
 
+        /**Observable.fromCallable { getData(coinHistory) }
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe{ lineChart.data = it }
+*/
+        lineChart.fitScreen()
         lineChart.data = getData(coinHistory)
+        lineChart.invalidate()
 
     }
 
@@ -120,24 +132,24 @@ object BindingAdapters {
 
         //Log.i("Coin History", "${coinHistory == null}")
         if (coinHistory != null) {
-            for (i in 0..coinHistory.size) {
+            for (i in 0 until coinHistory.size) {
                 val history = coinHistory[i]
-                val minute = history.timestamp as Float
+                val minute = history.timestamp.toFloat()
                 val historyPrice = history.price
-                val price = historyPrice as Float
+                val price = historyPrice.toFloat()
                 entries.add(Entry(minute, price))
-                Log.i("Graph data", "X: $minute Y: $price");
+                Log.i("Graph data", "X: $minute Y: $price")
             }
         }
 
         Collections.sort(entries, EntryXComparator())
 
         // create a dataset and give it a type
-        val set1 = LineDataSet(entries, "DataSet 1");
-        set1.axisDependency = YAxis.AxisDependency.LEFT;
-        set1.color = ColorTemplate.getHoloBlue()
+        val set1 = LineDataSet(entries, "DataSet 1")
+        set1.axisDependency = YAxis.AxisDependency.LEFT
+        set1.color = Color.parseColor("#6D748E")
         set1.valueTextColor = ColorTemplate.getHoloBlue()
-        set1.lineWidth = 1.5f
+        set1.lineWidth = 2.5f
         set1.setDrawCircles(false)
         set1.setDrawValues(false)
         set1.fillAlpha = 65

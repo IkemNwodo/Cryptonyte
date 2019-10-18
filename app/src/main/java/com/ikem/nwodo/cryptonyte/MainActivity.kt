@@ -31,9 +31,6 @@ class MainActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //mTextMessage = findViewById(R.id.message)
-        val navigation = findViewById<BottomNavigationView>(R.id.navigation)
-        //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
 }

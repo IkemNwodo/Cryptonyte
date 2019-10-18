@@ -18,17 +18,23 @@ object NumberFormatter {
     }
 
     @JvmStatic
-    fun priceFormatter(input: String): String {
+    fun priceFormatter(input: String?): String {
         val nf = DecimalFormat("##,###.00")
-        return nf.format(input.toDouble())
+        var result = ""
+        if (input != null)
+            result = nf.format(input.toDouble())
+
+        return result
     }
 
     @JvmStatic
-    fun coinNameFormatter(input: String): String {
-        return if (input.contains(' ')) {
+    fun coinNameFormatter(input: String?): String {
+        var result = ""
+        if (input != null) result = (if (input.contains(' ')) {
             input.replace(' ', '\n')
         } else {
             input
-        }
+        }).toString()
+        return result
     }
 }

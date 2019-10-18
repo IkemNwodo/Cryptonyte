@@ -24,6 +24,6 @@ abstract class CoinDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertCoinHistory(histories: Data)
 
-    @Query("SELECT * FROM  data WHERE historyId= :id")
-    abstract fun loadCoinHistory(id: Int): LiveData<Data>
+    @Query("SELECT * FROM  data WHERE historyId= :id AND timeFrame=:timeFrame")
+    abstract fun loadCoinHistory(id: Int, timeFrame: String): LiveData<Data>
 }

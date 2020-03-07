@@ -1,7 +1,6 @@
 package com.ikem.nwodo.cryptonyte.network
 
 import androidx.lifecycle.LiveData
-import com.ikem.nwodo.cryptonyte.network.api.ApiResponse
 import com.ikem.nwodo.cryptonyte.utils.Resource
 import retrofit2.CallAdapter
 import retrofit2.CallAdapter.Factory

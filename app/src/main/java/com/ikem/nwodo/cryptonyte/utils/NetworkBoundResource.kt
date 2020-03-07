@@ -1,11 +1,9 @@
 package com.ikem.nwodo.cryptonyte.utils
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
-import com.ikem.nwodo.cryptonyte.network.api.ApiResponse
-import io.reactivex.Single
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 
 
 abstract class NetworkBoundResource<ResultType, RequestType>

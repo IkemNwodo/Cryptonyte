@@ -14,4 +14,6 @@
     <string name="month">MONTH</string>
     <string name="coins">Coins</string>
     <string name="retry">Retry</string>
+    <string name="toolbar_coin_detail">Coin Detail</string>
+    <string name="toolbar_coin_list">Coin List</string>
 </resources>

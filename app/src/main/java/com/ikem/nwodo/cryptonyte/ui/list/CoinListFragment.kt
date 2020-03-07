@@ -5,7 +5,9 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -59,11 +61,10 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
 
         //(activity as AppCompatActivity).setSupportActionBar(binding.root.app_bar)
         binding.swipeRefresh.setOnRefreshListener(this)
-        binding.swipeRefresh.setColorSchemeColors(
-                ContextCompat.getColor(context!!, R.color.colorPrimary),
-                ContextCompat.getColor(context!!, R.color.colorAccent),
-                ContextCompat.getColor(context!!, R.color.colorPrimaryDark)
-        )
+        binding.swipeRefresh.setColorSchemeColors(getColor(context!!, R.color.colorPrimary),
+                getColor(context!!, R.color.colorAccent),
+                getColor(context!!, R.color.colorPrimaryDark)
+       )
 
         connectivityReceiver.observe(viewLifecycleOwner, Observer { t ->
             run {
@@ -83,6 +84,7 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoinListViewModel::class.java)
 
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.toolbar_coin_list)
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.coinListRecycler.layoutManager = LinearLayoutManager(context)

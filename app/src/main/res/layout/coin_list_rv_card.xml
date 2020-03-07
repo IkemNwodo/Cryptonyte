@@ -20,7 +20,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        style="@style/Widget.MaterialComponents.CardView"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -114,8 +114,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:setChartData="@{coinHistory}"
-                app:chartBackground="@{coin.color}"/>
+                app:setCoinListChartData="@{coinHistory}"
+                app:chartViewportColor="@{coin.color}"/>
 
             <TextView
                 android:id="@+id/coin_name"

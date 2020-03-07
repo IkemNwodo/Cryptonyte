@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.ikem.nwodo.cryptonyte.utils.Resource" />
+
+        <import type="com.ikem.nwodo.cryptonyte.utils.Status" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="resource"
+            type="Resource" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="@{resource.data == null ? View.VISIBLE : View.GONE}">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="@{resource.status == Status.LOADING ? View.VISIBLE : View.GONE}"/>
+    </LinearLayout>
+</layout>

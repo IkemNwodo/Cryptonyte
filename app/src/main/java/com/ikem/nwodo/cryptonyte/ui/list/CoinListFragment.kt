@@ -19,6 +19,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.ikem.nwodo.cryptonyte.R
 import com.ikem.nwodo.cryptonyte.databinding.CoinListFragmentBinding
 import com.ikem.nwodo.cryptonyte.db.model.Coin
+import com.ikem.nwodo.cryptonyte.db.model.CoinsWithHistory
 import com.ikem.nwodo.cryptonyte.db.model.Data
 import com.ikem.nwodo.cryptonyte.network.api.CoinService
 import com.ikem.nwodo.cryptonyte.utils.CoinClickListener
@@ -37,7 +38,7 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
     @Inject
     lateinit var connectivityReceiver: ConnectivityReceiver
 
-    lateinit var viewModel: CoinListViewModel
+    private lateinit var viewModel: CoinListViewModel
 
     lateinit var binding: CoinListFragmentBinding
 
@@ -70,7 +71,7 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
             run {
                 if (t.isConnected) {
                     isConnected = true
-                    viewModel.reFetch("true")
+                    viewModel.refresh()
                 }
                 else{
                     showSnackbar("Enable connection for new update!")
@@ -82,13 +83,13 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoinListViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(CoinListViewModel::class.java)
 
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.toolbar_coin_list)
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.coinListRecycler.layoutManager = LinearLayoutManager(context)
-        viewModel.loadCoins.observe(viewLifecycleOwner, Observer(fun(coinResource: Resource<List<Coin>>){
+        viewModel.coinHistory.observe(viewLifecycleOwner, Observer(fun(coinResource: Resource<List<Coin>>){
             if (coinResource.data != null){
                 isLoading = false
                 coinAdapter.submitList(coinResource.data)
@@ -98,18 +99,11 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
 
         binding.coinListRecycler.adapter = coinAdapter
 
-        //handler = Handler()
     }
 
     override fun onResume() {
         super.onResume()
-        //runnable.run()
         refetch()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        //handler.removeCallbacks(runnable)
     }
 
     fun showSnackbar(message: String){
@@ -123,20 +117,13 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
             refetch()
         }
     }
-    override fun onCoinHistoryListener(id: Int) {
-        viewModel.loadCoinHistory(id).observe(viewLifecycleOwner, Observer(fun(_coinHistory: Resource<Data>) {
-            _coinHistory.data?.coinHistory?.let { coinAdapter.setCoinHistories(it) }
-            //Log.d("Coin History", "${coinAdapter.coinHistory?.size}")
-
-            //Log.i("Coin History", "${_coinHistory.data == null}")
-        }))
-
-    }
 
     override fun onCoinClickListener(id: Int) {
         val action = CoinListFragmentDirections.actionCoinListFragmentToCoinDetailFragment(id)
         findNavController().navigate(action)
     }
+
+    override fun onCoinHistoryListener(id: Int) {}
 
     override fun onRefresh() {
         if (isConnected){
@@ -147,7 +134,7 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
     }
 
     private fun refetch() {
-        viewModel.reFetch("true")
+        viewModel.refresh()
     }
 
 }

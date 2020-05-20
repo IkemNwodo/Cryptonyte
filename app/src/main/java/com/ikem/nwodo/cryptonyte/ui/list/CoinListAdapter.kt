@@ -26,7 +26,6 @@ class CoinListAdapter(val coinClickListener: CoinClickListener) :
             }
         })
 {
-        var coinHistory: List<History>? = listOf()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinViewHolder {
@@ -43,16 +42,11 @@ class CoinListAdapter(val coinClickListener: CoinClickListener) :
 
         coinClickListener.onCoinHistoryListener(coin.id)
         // Log.d("Coin History size", "${coinHistory?.size}")
-        Log.i("Coin Id", "${coin.id}")
+        //Log.i("Coin Id", "${coin.id}")
 
         holder.binding?.setVariable(BR.coin, coin)
-        holder.binding?.setVariable(BR.coinHistory, coinHistory)
-        holder.binding?.executePendingBindings()
     }
 
-    fun setCoinHistories(history: List<History>?){
-        coinHistory = history
-    }
     inner class CoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         internal var binding:CoinListRvCardBinding?

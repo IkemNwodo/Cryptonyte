@@ -9,7 +9,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.ikem.nwodo.cryptonyte.db.CoinDao
 import com.ikem.nwodo.cryptonyte.db.CoinDatabase
-import com.ikem.nwodo.cryptonyte.network.LiveDataCallAdapterFactory
+import com.ikem.nwodo.cryptonyte.network.FlowCallAdapterFactory
 import com.ikem.nwodo.cryptonyte.network.api.CoinService
 import com.ikem.nwodo.cryptonyte.utils.Constants
 
@@ -21,7 +21,6 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.ikem.nwodo.cryptonyte.network.RequestInterceptor
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 
 @Module
 class AppModule {
@@ -45,10 +44,9 @@ class AppModule {
         return Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(LiveDataCallAdapterFactory())
+                .addCallAdapterFactory(FlowCallAdapterFactory())
                 .client(okHttpClient)
                 .build()
-
     }
 
     @Singleton

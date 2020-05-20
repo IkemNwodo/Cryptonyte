@@ -16,6 +16,7 @@ import com.google.android.material.button.MaterialButtonToggleGroup
 
 import com.ikem.nwodo.cryptonyte.R
 import com.ikem.nwodo.cryptonyte.databinding.CoinDetailFragmentBinding
+import com.ikem.nwodo.cryptonyte.db.model.CoinHistory24H
 import com.ikem.nwodo.cryptonyte.db.model.Data
 import com.ikem.nwodo.cryptonyte.ui.list.CoinListAdapter
 import com.ikem.nwodo.cryptonyte.utils.CoinClickListener
@@ -45,10 +46,10 @@ class CoinDetailFragment : DaggerFragment(), CoinClickListener {
         // MaterialToggleButtonGroup listener
         binding.toggleButtonGroup.addOnButtonCheckedListener { _, _, _ ->
             when(binding.toggleButtonGroup.checkedButtonId){
-                R.id.day_history -> viewModel.coinHistory24h.observe(viewLifecycleOwner, Observer { binding.historyData = it.data })
-                R.id.week_history -> viewModel.coinHistory7d.observe(viewLifecycleOwner, Observer { binding.historyData = it.data })
+                R.id.day_history -> viewModel.coinHistory24h.observe(viewLifecycleOwner, Observer { binding.coinHistory = it.data?.history })
+                /*R.id.week_history -> viewModel.coinHistory7d.observe(viewLifecycleOwner, Observer { binding.historyData = it.data })
                 R.id.month_history -> viewModel.coinHistory30d.observe(viewLifecycleOwner, Observer { binding.historyData = it.data })
-                R.id.year_history -> viewModel.coinHistory1y.observe(viewLifecycleOwner, Observer { binding.historyData = it.data })
+                R.id.year_history -> viewModel.coinHistory1y.observe(viewLifecycleOwner, Observer { binding.historyData = it.data })*/
             }
         }
         return binding.root
@@ -56,18 +57,18 @@ class CoinDetailFragment : DaggerFragment(), CoinClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CoinDetailViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(CoinDetailViewModel::class.java)
         viewModel.setId(args.coinId)
 
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.recyclerView.layoutManager = CustomLayoutManager(context)
         binding.recyclerView.scrollToPosition(args.coinId)
 
 
         viewModel.coins.observe(viewLifecycleOwner, Observer { adapter.submitList(it.data) })
         viewModel.singleCoin.observe(viewLifecycleOwner, Observer { binding.coin = it.data })
-        viewModel.coinHistory24h.observe(viewLifecycleOwner, Observer<Resource<Data>> {
-            binding.historyData = it.data
+        viewModel.coinHistory24h.observe(viewLifecycleOwner, Observer {
+            binding.coinHistory = it.data?.history
         })
 
         binding.recyclerView.adapter = adapter
@@ -84,7 +85,7 @@ class CoinDetailFragment : DaggerFragment(), CoinClickListener {
     override fun onCoinClickListener(id: Int) {
         viewModel.setId(id)
         viewModel.singleCoin.observe(viewLifecycleOwner, Observer { binding.coin = it.data })
-        viewModel.coinHistory24h.observe(viewLifecycleOwner, Observer { binding.historyData = it.data })
+        viewModel.coinHistory24h.observe(viewLifecycleOwner, Observer { binding.coinHistory = it.data?.history })
     }
 
 }

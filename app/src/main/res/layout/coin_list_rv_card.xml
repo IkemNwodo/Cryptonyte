@@ -5,15 +5,11 @@
     <data>
 
         <import type="com.ikem.nwodo.cryptonyte.utils.graph.NumberFormatter" />
-        <import type="com.ikem.nwodo.cryptonyte.db.model.History" />
         <import type="java.util.List" />
 
         <variable
             name="coin"
             type="com.ikem.nwodo.cryptonyte.db.model.Coin" />
-        <variable
-            name="coinHistory"
-            type="List&lt;History>" />
 
     </data>
 
@@ -114,7 +110,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:setCoinListChartData="@{coinHistory}"
+                app:setCoinListChartData="@{coin.history.history}"
                 app:chartViewportColor="@{coin.color}"/>
 
             <TextView

@@ -7,7 +7,6 @@ import java.util.concurrent.Executors
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
 open class AppExecutors(
         private val diskIO: Executor,
         private val networkIO: Executor,

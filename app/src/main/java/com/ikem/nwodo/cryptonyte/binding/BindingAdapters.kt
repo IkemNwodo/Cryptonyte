@@ -22,6 +22,9 @@ import com.ikem.nwodo.cryptonyte.db.model.History
 import com.ikem.nwodo.cryptonyte.utils.graph.MyXAxisValueFormatter
 import com.ikem.nwodo.cryptonyte.utils.graph.MyYAxisValueFormatter
 import com.ikem.nwodo.cryptonyte.utils.svg.SvgSoftwareLayerSetter
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.Observable
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -109,13 +112,14 @@ object BindingAdapters {
         val rightAxis = lineChart.axisRight
         rightAxis.isEnabled = false
 
-        /**Observable.fromCallable { getData(coinHistory) }
+
+        lineChart.fitScreen()
+
+        Observable.fromCallable { getData(coinHistory) }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe{ lineChart.data = it }
-*/
-        lineChart.fitScreen()
-        lineChart.data = getData(coinHistory)
+
         lineChart.invalidate()
 
     }

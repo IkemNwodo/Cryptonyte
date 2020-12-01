@@ -7,8 +7,11 @@ import com.ikem.nwodo.cryptonyte.network.api.CoinService
 import com.ikem.nwodo.cryptonyte.ui.list.RateLimiter
 import com.ikem.nwodo.cryptonyte.utils.NetworkBoundResource
 import com.ikem.nwodo.cryptonyte.utils.Resource
+import com.ikem.nwodo.cryptonyte.utils.Status
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,7 +21,7 @@ class CoinListRepository @Inject constructor(
         private val coinListDao: CoinDao,
         private val coinService: CoinService
 ) {
-    private fun loadCoins(): Flow<Resource<List<Coin>>> {
+    fun loadCoins(): Flow<Resource<List<Coin>>> {
         return object : NetworkBoundResource<List<Coin>, Result>() {
             override suspend fun saveCallResult(item: Result) {
                 item.data.coins?.let { coinListDao.insertCoins(it) }
@@ -28,15 +31,30 @@ class CoinListRepository @Inject constructor(
                 return coinListDao.loadCoins()
             }
 
-            override fun shouldFetchFromRemote(item: List<Coin>): Boolean {
-                return item.isEmpty()
+            override fun shouldLoadDb(): Boolean {
+                TODO("Not yet implemented")
             }
 
-            override suspend fun createCall(): Flow<Resource<Result>> {
-                return coinService.cryptoCurrencies()
+            override suspend fun createCall(): Flow<Resource<Result>> = withContext(Dispatchers.IO){
+                val result = coinService.cryptoCurrencies()
+                result.collect { resource ->
+                    when(resource.status){
+                         Status.LOADING -> { }
+                         Status.SUCCESS -> {
+                             resource.data?.data?.coins?.map { async { fetchCoins(it) } }
+                         }
+                    }
+
+                }
+
+                return
             }
 
         }.asFlow()
+    }
+
+    private fun fetchCoins(coin: Coin) {
+        val response = coinService.getCoinHistory24h()
     }
 
     private fun fetchCoinHistory(id: Int): Flow<Resource<CoinHistory24H>> {
@@ -50,18 +68,18 @@ class CoinListRepository @Inject constructor(
                 return coinListDao.loadCoinHistory24H(id)
             }
 
-            override fun shouldFetchFromRemote(item: CoinHistory24H): Boolean {
-                return item.history.isEmpty()
+            override fun shouldLoadDb(): Boolean {
+                TODO("Not yet implemented")
             }
 
             override suspend fun createCall(): Flow<Resource<Result>> {
-               return coinService.getCoinHistory24h(id)
+                return coinService.getCoinHistory24h(id)
             }
 
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
-    val fetchCoinsWithHistory = flow<Resource<List<Coin>>> {
+    fun fetchCoinsWithHistory() = flow<Resource<List<Coin>>> {
 
         emit(Resource.loading())
 

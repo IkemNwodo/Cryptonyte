@@ -40,7 +40,6 @@ class CoinListAdapter(val coinClickListener: CoinClickListener) :
     override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
         val coin = getItem(position)
 
-        coinClickListener.onCoinHistoryListener(coin.id)
         // Log.d("Coin History size", "${coinHistory?.size}")
         //Log.i("Coin Id", "${coin.id}")
 

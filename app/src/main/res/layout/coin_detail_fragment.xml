@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="com.ikem.nwodo.cryptonyte.utils.graph.NumberFormatter" />
 
         <import type="java.util.List" />

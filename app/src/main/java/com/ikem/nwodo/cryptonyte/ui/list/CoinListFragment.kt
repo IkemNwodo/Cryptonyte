@@ -47,15 +47,6 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
     private var isConnected = false
     private var isLoading = true
 
-   /** lateinit var handler: Handler
-    private val runnable = object : Runnable {
-        override fun run() {
-            viewModel.reFetch("true")
-
-            handler.postDelayed(this, 100000)
-        }
-    }
-*/
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.coin_list_fragment, container, false)
@@ -87,23 +78,24 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
 
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.toolbar_coin_list)
 
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.coinListRecycler.layoutManager = LinearLayoutManager(context)
-        viewModel.coinHistory.observe(viewLifecycleOwner, Observer(fun(coinResource: Resource<List<Coin>>){
+        binding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            coinListRecycler.layoutManager = LinearLayoutManager(context)
+            coinListRecycler.adapter = coinAdapter
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.coin.observe(viewLifecycleOwner, Observer(fun(coinResource: Resource<List<Coin>>){
             if (coinResource.data != null){
                 isLoading = false
                 coinAdapter.submitList(coinResource.data)
             }
             binding.resource = coinResource
         }))
-
-        binding.coinListRecycler.adapter = coinAdapter
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        refetch()
     }
 
     fun showSnackbar(message: String){

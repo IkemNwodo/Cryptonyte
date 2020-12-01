@@ -10,6 +10,7 @@ import com.ikem.nwodo.cryptonyte.utils.Resource
 import com.ikem.nwodo.cryptonyte.utils.Status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
@@ -42,6 +43,7 @@ class CoinListRepository @Inject constructor(
                          Status.LOADING -> { }
                          Status.SUCCESS -> {
                              resource.data?.data?.coins?.map { async { fetchCoins(it) } }
+                                     ?.awaitAll()
                          }
                     }
 
@@ -55,28 +57,6 @@ class CoinListRepository @Inject constructor(
 
     private fun fetchCoins(coin: Coin) {
         val response = coinService.getCoinHistory24h()
-    }
-
-    private fun fetchCoinHistory(id: Int): Flow<Resource<CoinHistory24H>> {
-        return object : NetworkBoundResource<CoinHistory24H, Result>() {
-            override suspend fun saveCallResult(item: Result) {
-                val coinHistory24H = CoinHistory24H(item.data.coinHistory, id)
-                coinListDao.insertCoinHistory(coinHistory24H)
-            }
-
-            override fun loadFromDb(): Flow<CoinHistory24H> {
-                return coinListDao.loadCoinHistory24H(id)
-            }
-
-            override fun shouldLoadDb(): Boolean {
-                TODO("Not yet implemented")
-            }
-
-            override suspend fun createCall(): Flow<Resource<Result>> {
-                return coinService.getCoinHistory24h(id)
-            }
-
-        }.asFlow().flowOn(Dispatchers.IO)
     }
 
     fun fetchCoinsWithHistory() = flow<Resource<List<Coin>>> {

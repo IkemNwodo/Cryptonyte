@@ -9,12 +9,9 @@ import javax.inject.Inject
 
 class CoinListViewModel @Inject constructor(private val coinListRepository: CoinListRepository) : ViewModel() {
 
-    private val _coinHistory = coinListRepository
-        .fetchCoinsWithHistory
-        .asLiveData(viewModelScope.coroutineContext)
-
-    val coinHistory: LiveData<Resource<List<Coin>>>
-        get() = _coinHistory
+    val coinHistory = coinListRepository
+            .fetchCoinsWithHistory
+            .asLiveData(viewModelScope.coroutineContext)
 
     fun refresh() = coinHistory
 }

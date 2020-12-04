@@ -89,7 +89,7 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
     override fun onResume() {
         super.onResume()
 
-        viewModel.coin.observe(viewLifecycleOwner, Observer(fun(coinResource: Resource<List<Coin>>){
+        viewModel.coinHistory.observe(viewLifecycleOwner, Observer(fun(coinResource: Resource<List<Coin>>){
             if (coinResource.data != null){
                 isLoading = false
                 coinAdapter.submitList(coinResource.data)

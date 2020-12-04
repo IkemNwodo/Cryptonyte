@@ -21,6 +21,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.ikem.nwodo.cryptonyte.network.RequestInterceptor
+import okhttp3.logging.HttpLoggingInterceptor
 
 @Module
 class AppModule {
@@ -44,7 +45,7 @@ class AppModule {
         return Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(FlowCallAdapterFactory())
+                .addCallAdapterFactory(FlowCallAdapterFactory.create())
                 .client(okHttpClient)
                 .build()
     }
@@ -52,9 +53,10 @@ class AppModule {
     @Singleton
     @Provides
     fun provideOkHttpclient(): OkHttpClient{
-        val requestInterceptor = RequestInterceptor()
+        val httpLoggingInterceptor = HttpLoggingInterceptor()
+        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         return OkHttpClient.Builder()
-                .addInterceptor(requestInterceptor)
+                .addInterceptor(httpLoggingInterceptor)
                 .build()
     }
 

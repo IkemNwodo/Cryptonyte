@@ -21,7 +21,7 @@ import javax.inject.Singleton
 class CoinListRepository @Inject constructor(
         private val coinListDao: CoinDao,
         private val coinService: CoinService
-) {
+) : Repository {
     fun loadCoins(): Flow<Resource<List<Coin>>> {
         return object : NetworkBoundResource<List<Coin>, Result>() {
             override suspend fun saveCallResult(item: Result) {
@@ -33,30 +33,36 @@ class CoinListRepository @Inject constructor(
             }
 
             override fun shouldLoadDb(): Boolean {
-                TODO("Not yet implemented")
+                return true
             }
 
-            override suspend fun createCall(): Flow<Resource<Result>> = withContext(Dispatchers.IO){
-                val result = coinService.cryptoCurrencies()
-                result.collect { resource ->
-                    when(resource.status){
-                         Status.LOADING -> { }
-                         Status.SUCCESS -> {
-                             resource.data?.data?.coins?.map { async { fetchCoins(it) } }
-                                     ?.awaitAll()
-                         }
-                    }
-
-                }
-
-                return
+            override suspend fun createCall(): Flow<Resource<Result>> {
+                return coinService.cryptoCurrencies()
             }
 
-        }.asFlow()
+        }.asFlow().flowOn(Dispatchers.IO)
     }
 
-    private fun fetchCoins(coin: Coin) {
-        val response = coinService.getCoinHistory24h()
+    private fun fetchCoinHistory(id: Int): Flow<Resource<CoinHistory24H>> {
+        return object : NetworkBoundResource<CoinHistory24H, Result>() {
+            override suspend fun saveCallResult(item: Result) {
+                val coinHistory24H = CoinHistory24H(item.data.coinHistory, id)
+                coinListDao.insertCoinHistory(coinHistory24H)
+            }
+
+            override fun loadFromDb(): Flow<CoinHistory24H> {
+                return coinListDao.loadCoinHistory24H(id)
+            }
+
+            override fun shouldLoadDb(): Boolean {
+                return true
+            }
+
+            override suspend fun createCall(): Flow<Resource<Result>> {
+                return coinService.getCoinHistory24h(id)
+            }
+
+        }.asFlow().flowOn(Dispatchers.IO)
     }
 
     fun fetchCoinsWithHistory() = flow<Resource<List<Coin>>> {
@@ -65,7 +71,7 @@ class CoinListRepository @Inject constructor(
 
         val coins = loadCoins().first().data
         coins?.map {
-            val history24H= fetchCoinHistory(it.id).first().data!!
+            val history24H = fetchCoinHistory(it.id).first().data!!
             it.history = history24H
             it
         }

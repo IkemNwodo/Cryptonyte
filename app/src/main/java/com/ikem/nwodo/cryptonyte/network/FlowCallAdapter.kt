@@ -25,13 +25,12 @@ class FlowCallAdapter<R>(private val responseType: Type) :
 
     @ExperimentalCoroutinesApi
     override fun adapt(call: Call<R>): Flow<Resource<R>> = flow {
-        emit(Resource.loading())
 
         val response = call.awaitResponse()
         if (response.isSuccessful){
             emit(Resource.success(response.body()) as Resource<R>)
         }else {
-            emit(Resource.error<R>(response.message()))
+            emit(Resource.error(response.message()))
         }
     }.catch { emit(Resource.error(it.message)) }
 }

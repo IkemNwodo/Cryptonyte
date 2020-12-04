@@ -13,28 +13,28 @@ abstract class NetworkBoundResource<DB, REMOTE> {
     fun asFlow() = flow<Resource<DB>>{
         emit(Resource.loading())
 
-        createCall().collect{ response ->
-            when (response.status) {
-
-                Status.LOADING -> {}
-
-                Status.SUCCESS -> {
-                    val data = response.data
-                    if (data != null) {
-                        saveCallResult(data)
-                    }
-                }
-
-                Status.ERROR -> {
-                    emit(Resource.error(response.message))
-                }
-            }
-        }
-        val localData = loadFromDb().first()
+        //val localData = loadFromDb().first()
 
         // checking if local data is staled
         if (shouldLoadDb()){
             // need remote data
+            createCall().collect{ response ->
+                when (response.status) {
+
+                    Status.LOADING -> {}
+
+                    Status.SUCCESS -> {
+                        val data = response.data
+                        if (data != null) {
+                            saveCallResult(data)
+                        }
+                    }
+
+                    Status.ERROR -> {
+                        emit(Resource.error(response.message))
+                    }
+                }
+            }
         }
     }
 

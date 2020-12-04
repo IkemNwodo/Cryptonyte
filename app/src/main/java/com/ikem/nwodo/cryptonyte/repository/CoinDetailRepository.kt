@@ -20,7 +20,7 @@ import javax.inject.Singleton
 class CoinDetailRepository @Inject constructor(
         private val coinDao: CoinDao,
         private val coinService: CoinService
-) {
+) : Repository {
 
 
     fun loadSingleCoin(id: Int): Flow<Resource<Coin>> {
@@ -28,8 +28,8 @@ class CoinDetailRepository @Inject constructor(
 
             override suspend fun saveCallResult(item: Result) {}
 
-            override fun shouldFetchFromRemote(item: Coin): Boolean {
-                return false
+            override fun shouldLoadDb(): Boolean {
+                TODO("Not yet implemented")
             }
 
             override fun loadFromDb(): Flow<Coin> {
@@ -53,8 +53,8 @@ class CoinDetailRepository @Inject constructor(
                 return coinDao.loadCoins()
             }
 
-            override fun shouldFetchFromRemote(item: List<Coin>): Boolean {
-                return item.isEmpty()
+            override fun shouldLoadDb(): Boolean {
+                TODO("Not yet implemented")
             }
 
             override suspend fun createCall(): Flow<Resource<Result>> {
@@ -75,8 +75,8 @@ class CoinDetailRepository @Inject constructor(
                 return coinDao.loadCoinHistory24H(id)
             }
 
-            override fun shouldFetchFromRemote(item: CoinHistory24H): Boolean {
-                return item.history.isEmpty()
+            override fun shouldLoadDb(): Boolean {
+                TODO("Not yet implemented")
             }
 
             override suspend fun createCall(): Flow<Resource<Result>> {

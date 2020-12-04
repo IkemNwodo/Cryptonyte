@@ -10,6 +10,11 @@ import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 class FlowCallAdapterFactory : Factory() {
+
+    companion object {
+        fun create() = FlowCallAdapterFactory()
+    }
+
     override fun get(
             returnType: Type,
             annotations: Array<Annotation>,

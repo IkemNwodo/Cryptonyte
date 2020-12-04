@@ -11,12 +11,15 @@ import javax.inject.Inject
 
 class CoinListViewModel @Inject constructor(private val coinListRepository: CoinListRepository) : ViewModel() {
 
+    init {
+
+    }
     private val coins = coinListRepository
-        .
+            .fetchCoinsWithHistory()
         .asLiveData(viewModelScope.coroutineContext)
 
     val coinHistory: LiveData<Resource<List<Coin>>>
-        get() = _coinHistory
+        get() = coins
 
     fun refresh() = coinHistory
 }

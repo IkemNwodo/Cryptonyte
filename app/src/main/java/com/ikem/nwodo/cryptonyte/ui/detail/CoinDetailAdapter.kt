@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ikem.nwodo.cryptonyte.BR
 import com.ikem.nwodo.cryptonyte.R
 import com.ikem.nwodo.cryptonyte.databinding.CoinDetailRvCardBinding
-import com.ikem.nwodo.cryptonyte.db.model.Coin
+import com.ikem.nwodo.cryptonyte.data.local.db.model.Coin
 import com.ikem.nwodo.cryptonyte.utils.CoinClickListener
 
 class CoinDetailAdapter(val coinClickListener: CoinClickListener) :

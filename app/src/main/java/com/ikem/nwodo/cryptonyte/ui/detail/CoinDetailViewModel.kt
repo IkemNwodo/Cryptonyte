@@ -1,9 +1,9 @@
 package com.ikem.nwodo.cryptonyte.ui.detail
 
 import androidx.lifecycle.*
-import com.ikem.nwodo.cryptonyte.db.model.Coin
-import com.ikem.nwodo.cryptonyte.db.model.CoinHistory24H
-import com.ikem.nwodo.cryptonyte.db.model.Data
+import com.ikem.nwodo.cryptonyte.data.local.db.model.Coin
+import com.ikem.nwodo.cryptonyte.data.local.db.model.CoinHistory24H
+import com.ikem.nwodo.cryptonyte.data.local.db.model.Data
 import com.ikem.nwodo.cryptonyte.repository.CoinDetailRepository
 import com.ikem.nwodo.cryptonyte.ui.list.RateLimiter
 import com.ikem.nwodo.cryptonyte.utils.Resource

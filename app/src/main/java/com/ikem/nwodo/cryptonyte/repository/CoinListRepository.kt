@@ -1,9 +1,12 @@
 package com.ikem.nwodo.cryptonyte.repository
 
 import androidx.lifecycle.LiveData
-import com.ikem.nwodo.cryptonyte.db.CoinDao
+import com.ikem.nwodo.cryptonyte.data.local.db.CoinDao
+import com.ikem.nwodo.cryptonyte.data.local.db.model.Coin
+import com.ikem.nwodo.cryptonyte.data.local.db.model.CoinHistory24H
+import com.ikem.nwodo.cryptonyte.data.local.db.model.Result
 import com.ikem.nwodo.cryptonyte.db.model.*
-import com.ikem.nwodo.cryptonyte.network.api.CoinService
+import com.ikem.nwodo.cryptonyte.data.remote.network.api.CoinService
 import com.ikem.nwodo.cryptonyte.ui.list.RateLimiter
 import com.ikem.nwodo.cryptonyte.utils.NetworkBoundResource
 import com.ikem.nwodo.cryptonyte.utils.Resource

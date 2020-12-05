@@ -9,7 +9,7 @@
 
         <import type="java.util.List" />
 
-        <import type="com.ikem.nwodo.cryptonyte.db.model.Coin" />
+        <import type="com.ikem.nwodo.cryptonyte.data.local.db.model.Coin" />
 
         <import type="com.ikem.nwodo.cryptonyte.utils.Status" />
 
@@ -18,7 +18,7 @@
 
         <variable
             name="resource"
-            type="Resource&lt;List&lt;Coin>>" />
+            type="com.ikem.nwodo.cryptonyte.data.local.db.model.Coin" />
 
     </data>
 

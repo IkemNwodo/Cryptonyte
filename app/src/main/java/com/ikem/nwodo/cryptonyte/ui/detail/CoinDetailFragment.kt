@@ -16,8 +16,8 @@ import com.google.android.material.button.MaterialButtonToggleGroup
 
 import com.ikem.nwodo.cryptonyte.R
 import com.ikem.nwodo.cryptonyte.databinding.CoinDetailFragmentBinding
-import com.ikem.nwodo.cryptonyte.db.model.CoinHistory24H
-import com.ikem.nwodo.cryptonyte.db.model.Data
+import com.ikem.nwodo.cryptonyte.data.local.db.model.CoinHistory24H
+import com.ikem.nwodo.cryptonyte.data.local.db.model.Data
 import com.ikem.nwodo.cryptonyte.ui.list.CoinListAdapter
 import com.ikem.nwodo.cryptonyte.utils.CoinClickListener
 import com.ikem.nwodo.cryptonyte.utils.CustomLayoutManager

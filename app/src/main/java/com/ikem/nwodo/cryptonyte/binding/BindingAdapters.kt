@@ -18,7 +18,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.EntryXComparator
 import com.ikem.nwodo.cryptonyte.R
-import com.ikem.nwodo.cryptonyte.db.model.History
+import com.ikem.nwodo.cryptonyte.data.local.db.model.History
 import com.ikem.nwodo.cryptonyte.utils.graph.MyXAxisValueFormatter
 import com.ikem.nwodo.cryptonyte.utils.graph.MyYAxisValueFormatter
 import com.ikem.nwodo.cryptonyte.utils.svg.SvgSoftwareLayerSetter

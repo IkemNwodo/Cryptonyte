@@ -10,11 +10,11 @@
 
         <variable
             name="coinHistory"
-            type="List&lt;com.ikem.nwodo.cryptonyte.db.model.History>" />
+            type="com.ikem.nwodo.cryptonyte.data.local.db.model.History" />
 
         <variable
             name="coin"
-            type="com.ikem.nwodo.cryptonyte.db.model.Coin" />
+            type="com.ikem.nwodo.cryptonyte.data.local.db.model.Coin" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

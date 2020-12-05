@@ -1,8 +1,8 @@
 package com.ikem.nwodo.cryptonyte.ui.list
 
 import androidx.lifecycle.*
-import com.ikem.nwodo.cryptonyte.db.model.Coin
-import com.ikem.nwodo.cryptonyte.db.model.CoinsWithHistory
+import com.ikem.nwodo.cryptonyte.data.local.db.model.Coin
+import com.ikem.nwodo.cryptonyte.data.local.db.model.CoinsWithHistory
 import com.ikem.nwodo.cryptonyte.repository.CoinListRepository
 import com.ikem.nwodo.cryptonyte.utils.Resource
 import kotlinx.coroutines.flow.first

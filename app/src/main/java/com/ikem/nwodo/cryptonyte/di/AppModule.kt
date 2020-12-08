@@ -9,7 +9,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.ikem.nwodo.cryptonyte.data.local.db.CoinDao
 import com.ikem.nwodo.cryptonyte.data.local.db.CoinDatabase
-import com.ikem.nwodo.cryptonyte.data.remote.network.FlowCallAdapterFactory
 import com.ikem.nwodo.cryptonyte.data.remote.network.api.CoinService
 import com.ikem.nwodo.cryptonyte.utils.Constants
 
@@ -20,7 +19,6 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.ikem.nwodo.cryptonyte.data.remote.network.RequestInterceptor
 import okhttp3.logging.HttpLoggingInterceptor
 
 @Module
@@ -45,7 +43,6 @@ class AppModule {
         return Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(FlowCallAdapterFactory.create())
                 .client(okHttpClient)
                 .build()
     }

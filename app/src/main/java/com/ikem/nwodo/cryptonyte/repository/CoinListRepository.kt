@@ -5,8 +5,9 @@ import com.ikem.nwodo.cryptonyte.data.local.db.CoinDao
 import com.ikem.nwodo.cryptonyte.data.local.db.model.Coin
 import com.ikem.nwodo.cryptonyte.data.local.db.model.CoinHistory24H
 import com.ikem.nwodo.cryptonyte.data.local.db.model.Result
-import com.ikem.nwodo.cryptonyte.db.model.*
 import com.ikem.nwodo.cryptonyte.data.remote.network.api.CoinService
+import com.ikem.nwodo.cryptonyte.data.remote.source.coinList.CoinListLocalSource
+import com.ikem.nwodo.cryptonyte.data.remote.source.coinList.CoinListRemoteSource_impl
 import com.ikem.nwodo.cryptonyte.ui.list.RateLimiter
 import com.ikem.nwodo.cryptonyte.utils.NetworkBoundResource
 import com.ikem.nwodo.cryptonyte.utils.Resource
@@ -22,31 +23,32 @@ import javax.inject.Singleton
 
 @Singleton
 class CoinListRepository @Inject constructor(
-        private val coinListDao: CoinDao,
-        private val coinService: CoinService
+        private val coinListLocalSource: CoinListLocalSource,
+        private val coinlistremotesourceImpl: CoinListRemoteSource_impl
 ) : Repository {
-    fun loadCoins(): Flow<Resource<List<Coin>>> {
-        return object : NetworkBoundResource<List<Coin>, Result>() {
-            override suspend fun saveCallResult(item: Result) {
-                item.data.coins?.let { coinListDao.insertCoins(it) }
-            }
 
-            override fun loadFromDb(): Flow<List<Coin>> {
-                return coinListDao.loadCoins()
-            }
+    fun loadCoins(): Flow<Resource<List<Coin>>> = coinlistremotesourceImpl.fetchCoins()
+                .map { extractIdsAndFetchHistory(it) }.flowOn(Dispatchers.IO)
 
-            override fun shouldLoadDb(): Boolean {
-                return true
-            }
 
-            override suspend fun createCall(): Flow<Resource<Result>> {
-                return coinService.cryptoCurrencies()
-            }
-
-        }.asFlow().flowOn(Dispatchers.IO)
+    private suspend fun extractIdsAndFetchHistory(resource: Resource<List<Coin>>): Resource<List<Coin>> {
+       val coins = when(resource) {
+           is Resource.Success -> resource.data
+           else -> null
+       }
+        coins?.map { extractHistory(it)}
     }
 
-    private fun fetchCoinHistory(id: Int): Flow<Resource<CoinHistory24H>> {
+    private suspend fun extractHistory(coin: Coin) : Coin = withContext(Dispatchers.IO){
+        val history = coinlistremotesourceImpl.fetchCoinHistory(coin.id)
+                .collect {
+                    when(it) {
+                        is Resource.Success -> coin.copy(history = it.data)
+                    } }
+    }
+
+
+    /*private fun fetchCoinHistory(id: Int): Flow<Resource<CoinHistory24H>> {
         return object : NetworkBoundResource<CoinHistory24H, Result>() {
             override suspend fun saveCallResult(item: Result) {
                 val coinHistory24H = CoinHistory24H(item.data.coinHistory, id)
@@ -79,5 +81,5 @@ class CoinListRepository @Inject constructor(
             it
         }
         emit(Resource.success(coins))
-    }
+    }*/
 }

@@ -53,9 +53,9 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
 
         //(activity as AppCompatActivity).setSupportActionBar(binding.root.app_bar)
         binding.swipeRefresh.setOnRefreshListener(this)
-        binding.swipeRefresh.setColorSchemeColors(getColor(context!!, R.color.colorPrimary),
-                getColor(context!!, R.color.colorAccent),
-                getColor(context!!, R.color.colorPrimaryDark)
+        binding.swipeRefresh.setColorSchemeColors(getColor(requireContext(), R.color.colorPrimary),
+                getColor(requireContext(), R.color.colorAccent),
+                getColor(requireContext(), R.color.colorPrimaryDark)
        )
 
         connectivityReceiver.observe(viewLifecycleOwner, Observer { t ->
@@ -89,11 +89,9 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
     override fun onResume() {
         super.onResume()
 
-        viewModel.coinHistory.observe(viewLifecycleOwner, Observer(fun(coinResource: Resource<List<Coin>>){
-            if (coinResource.data != null){
-                isLoading = false
-                coinAdapter.submitList(coinResource.data)
-            }
+        viewModel.coins.observe(viewLifecycleOwner, Observer(fun(coinResource: Resource<List<Coin>>){
+            isLoading = false
+            coinAdapter.submitList()
             binding.resource = coinResource
         }))
     }

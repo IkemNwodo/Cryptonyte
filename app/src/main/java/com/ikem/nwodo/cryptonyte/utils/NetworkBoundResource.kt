@@ -2,8 +2,6 @@ package com.ikem.nwodo.cryptonyte.utils
 
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 
@@ -11,7 +9,7 @@ import kotlinx.coroutines.flow.*
 abstract class NetworkBoundResource<DB, REMOTE> {
 
     fun asFlow() = flow<Resource<DB>>{
-        emit(Resource.loading())
+        emit(Resource.Loading)
 
         //val localData = loadFromDb().first()
 
@@ -19,32 +17,20 @@ abstract class NetworkBoundResource<DB, REMOTE> {
         if (shouldLoadDb()){
             // need remote data
             createCall().collect{ response ->
-                when (response.status) {
+                when (response) {
 
-                    Status.LOADING -> {}
+                    is Resource.Loading -> {}
 
-                    Status.SUCCESS -> {
-                        val data = response.data
-                        if (data != null) {
-                            saveCallResult(data)
-                        }
+                    is Resource.Success -> {
+                        response.data?.let { saveCallResult(it) }
                     }
 
-                    Status.ERROR -> {
-                        emit(Resource.error(response.message))
+                    is Resource.Error -> {
+                        emit(Resource.Error(response.toString()))
                     }
                 }
             }
         }
-    }
-
-    @ExperimentalCoroutinesApi
-    private suspend fun FlowCollector<Resource<DB>>.emitLocalDbData() {
-        //emit(Resource.loading())
-
-        emitAll(loadFromDb().map { dbData ->
-            Resource.success(dbData)
-        })
     }
 
 

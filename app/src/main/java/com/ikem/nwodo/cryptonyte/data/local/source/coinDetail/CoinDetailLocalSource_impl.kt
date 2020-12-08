@@ -1,4 +1,4 @@
-package com.ikem.nwodo.cryptonyte.data.remote.source.coinDetail
+package com.ikem.nwodo.cryptonyte.data.local.source.coinDetail
 
 class CoinDetailLocalSource_impl {
 }

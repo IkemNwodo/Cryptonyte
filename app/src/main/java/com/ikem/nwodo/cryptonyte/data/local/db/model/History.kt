@@ -17,6 +17,4 @@ data class History(
     @Expose
     val timestamp: Long,
 
-    @PrimaryKey(autoGenerate = true)
-    val history_id: Int = 0
 )

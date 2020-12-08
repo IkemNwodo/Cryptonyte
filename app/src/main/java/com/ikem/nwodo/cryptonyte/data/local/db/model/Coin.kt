@@ -117,9 +117,9 @@ data class Coin(
 
         @SerializedName("penalty")
         @Expose
-        val penalty: Boolean
-){
-    @Ignore
-    lateinit var history: CoinHistory24H
+        val penalty: Boolean,
 
-}
+        @SerializedName("history")
+        @Expose
+        val history: List<History>
+)

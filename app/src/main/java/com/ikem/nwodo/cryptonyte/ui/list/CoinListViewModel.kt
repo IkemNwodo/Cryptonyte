@@ -14,12 +14,12 @@ class CoinListViewModel @Inject constructor(private val coinListRepository: Coin
     init {
 
     }
-    private val coins = coinListRepository
-            .fetchCoinsWithHistory()
+    val coins: LiveData<Resource<List<Coin>>> = coinListRepository
+            .loadCoins()
         .asLiveData(viewModelScope.coroutineContext)
 
-    val coinHistory: LiveData<Resource<List<Coin>>>
+    /*val coinHistory: LiveData<Resource<List<Coin>>>
         get() = coins
-
-    fun refresh() = coinHistory
+*/
+    fun refresh() = coins
 }

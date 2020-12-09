@@ -33,8 +33,10 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     @Inject
     lateinit var coinService: CoinService
+
     @Inject
     lateinit var connectivityReceiver: ConnectivityReceiver
 
@@ -56,15 +58,14 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
         binding.swipeRefresh.setColorSchemeColors(getColor(requireContext(), R.color.colorPrimary),
                 getColor(requireContext(), R.color.colorAccent),
                 getColor(requireContext(), R.color.colorPrimaryDark)
-       )
+        )
 
         connectivityReceiver.observe(viewLifecycleOwner, Observer { t ->
             run {
                 if (t.isConnected) {
                     isConnected = true
                     viewModel.refresh()
-                }
-                else{
+                } else {
                     showSnackbar("Enable connection for new update!")
                 }
             }
@@ -89,25 +90,33 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
     override fun onResume() {
         super.onResume()
 
-        viewModel.coins.observe(viewLifecycleOwner, Observer(fun(coinResource: Resource<List<Coin>>){
-            binding.resource = coinResource
-            when(coinResource){
-                is Resource.Success -> {coinAdapter.submitList(coinResource.data)
-                                        isLoading = false
+        viewModel.coins.observe(viewLifecycleOwner, Observer(fun(coinResource: Resource<List<Coin>>) {
+            when (coinResource) {
+                is Resource.Loading -> binding.progressBar.visibility = View.VISIBLE
+
+                is Resource.Success -> {
+                    coinAdapter.submitList(coinResource.data)
+                    isLoading = false
+                    binding.progressBar.visibility = View.GONE
                 }
+
+                is Resource.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+
             }
 
         }))
     }
 
-    fun showSnackbar(message: String){
+    fun showSnackbar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.retry)) { snackBarRetryAction() }
                 .show()
     }
 
-    private fun snackBarRetryAction(){
-        if(isConnected){
+    private fun snackBarRetryAction() {
+        if (isConnected) {
             refetch()
         }
     }
@@ -120,7 +129,7 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
     override fun onCoinHistoryListener(id: Int) {}
 
     override fun onRefresh() {
-        if (isConnected){
+        if (isConnected) {
             refetch()
             binding.swipeRefresh.isRefreshing = isLoading
         }

@@ -27,7 +27,8 @@ class CoinListRepository @Inject constructor(
         private val coinlistremotesourceImpl: CoinListRemoteSource_impl
 ) : Repository {
 
-    fun loadCoins(): Flow<Resource<List<Coin>>> = coinlistremotesourceImpl.fetchCoins()
+    fun loadCoins(): Flow<Resource<List<Coin>>> =
+            coinlistremotesourceImpl.fetchCoins()
                 .map { extractIdsAndFetchHistory(it) }.flowOn(Dispatchers.IO)
 
 
@@ -36,16 +37,18 @@ class CoinListRepository @Inject constructor(
            is Resource.Success -> resource.data
            else -> null
        }
-        coins?.map { extractHistory(it)}
-    }
-
-    private suspend fun extractHistory(coin: Coin) : Coin = withContext(Dispatchers.IO){
-        val history = coinlistremotesourceImpl.fetchCoinHistory(coin.id)
+        coins?.map { coin ->
+            coinlistremotesourceImpl.fetchCoinHistory(coin.id)
                 .collect {
                     when(it) {
-                        is Resource.Success -> coin.copy(history = it.data)
-                    } }
+                        is Resource.Success -> it.data?.let { history -> coin.copy( history = history) }
+                    }
+                }
+        }
+
+        return Resource.Success(coins)
     }
+
 
 
     /*private fun fetchCoinHistory(id: Int): Flow<Resource<CoinHistory24H>> {

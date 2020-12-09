@@ -4,22 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <import type="com.ikem.nwodo.cryptonyte.utils.Resource" />
-
-        <import type="java.util.List" />
-
-        <import type="com.ikem.nwodo.cryptonyte.data.local.db.model.Coin" />
-
-        <import type="com.ikem.nwodo.cryptonyte.utils.Status" />
-
-        <import type="android.view.View" />
-
-
-        <variable
-            name="resource"
-            type="Resource&lt;List&lt;Coin>>" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

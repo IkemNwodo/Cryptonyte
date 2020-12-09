@@ -7,14 +7,16 @@
         <import type="com.ikem.nwodo.cryptonyte.utils.graph.NumberFormatter" />
 
         <import type="java.util.List" />
+        <import type="com.ikem.nwodo.cryptonyte.data.local.db.model.History"/>
 
         <variable
             name="coinHistory"
-            type="com.ikem.nwodo.cryptonyte.data.local.db.model.History" />
+            type= "List&lt;History>" />
 
         <variable
             name="coin"
             type="com.ikem.nwodo.cryptonyte.data.local.db.model.Coin" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

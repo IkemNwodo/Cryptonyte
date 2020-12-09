@@ -90,10 +90,10 @@ class CoinListFragment : DaggerFragment(), CoinClickListener, SwipeRefreshLayout
         super.onResume()
 
         viewModel.coins.observe(viewLifecycleOwner, Observer(fun(coinResource: Resource<List<Coin>>){
+            binding.resource = coinResource
             when(coinResource){
                 is Resource.Success -> {coinAdapter.submitList(coinResource.data)
                                         isLoading = false
-                                        binding.resource = coinResource.data
                 }
             }
 

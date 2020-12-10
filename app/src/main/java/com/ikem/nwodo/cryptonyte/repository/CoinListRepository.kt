@@ -1,23 +1,11 @@
 package com.ikem.nwodo.cryptonyte.repository
 
-import androidx.lifecycle.LiveData
-import com.ikem.nwodo.cryptonyte.data.local.db.CoinDao
 import com.ikem.nwodo.cryptonyte.data.local.db.model.Coin
-import com.ikem.nwodo.cryptonyte.data.local.db.model.CoinHistory24H
-import com.ikem.nwodo.cryptonyte.data.local.db.model.Result
-import com.ikem.nwodo.cryptonyte.data.remote.network.api.CoinService
-import com.ikem.nwodo.cryptonyte.data.remote.source.coinList.CoinListLocalSource
+import com.ikem.nwodo.cryptonyte.data.local.source.coinList.CoinListLocalSource
 import com.ikem.nwodo.cryptonyte.data.remote.source.coinList.CoinListRemoteSource_impl
-import com.ikem.nwodo.cryptonyte.ui.list.RateLimiter
-import com.ikem.nwodo.cryptonyte.utils.NetworkBoundResource
 import com.ikem.nwodo.cryptonyte.utils.Resource
-import com.ikem.nwodo.cryptonyte.utils.Status
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.withContext
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 

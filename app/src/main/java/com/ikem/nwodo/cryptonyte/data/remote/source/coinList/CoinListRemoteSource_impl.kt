@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class CoinListRemoteSource_impl @Inject constructor(val coinService: CoinService) {
+
     fun fetchCoins(): Flow<Resource<List<Coin>>> = flow {
 
         val result = coinService.cryptoCurrencies()

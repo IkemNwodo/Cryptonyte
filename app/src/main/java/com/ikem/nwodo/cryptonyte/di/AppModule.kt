@@ -78,10 +78,4 @@ class AppModule {
     fun providesCoinDao(coinDatabase: CoinDatabase): CoinDao {
         return coinDatabase.coinDao()
     }
-    /**
-     * @Provides
-     * public GsonConverterFactory gsonConverterFactory(Gson gson){
-     * return GsonConverterFactory.create(gson);
-     * }
-     */
 }

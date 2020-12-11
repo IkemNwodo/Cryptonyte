@@ -1,21 +1,7 @@
 package com.ikem.nwodo.cryptonyte.repository
 
-import androidx.lifecycle.LiveData
 import com.ikem.nwodo.cryptonyte.data.local.db.CoinDao
-import com.ikem.nwodo.cryptonyte.data.local.db.model.Coin
-import com.ikem.nwodo.cryptonyte.data.local.db.model.CoinHistory24H
-import com.ikem.nwodo.cryptonyte.data.local.db.model.Result
-import com.ikem.nwodo.cryptonyte.db.model.*
 import com.ikem.nwodo.cryptonyte.data.remote.network.api.CoinService
-import com.ikem.nwodo.cryptonyte.ui.list.RateLimiter
-import com.ikem.nwodo.cryptonyte.utils.AppExecutors
-import com.ikem.nwodo.cryptonyte.utils.NetworkBoundResource
-import com.ikem.nwodo.cryptonyte.utils.Resource
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,7 +12,7 @@ class CoinDetailRepository @Inject constructor(
 ) : Repository {
 
 
-    fun loadSingleCoin(id: Int): Flow<Resource<Coin>> {
+    /*fun loadSingleCoin(id: Int): Flow<Resource<Coin>> {
         return object : NetworkBoundResource<Coin, Result>() {
 
             override suspend fun saveCallResult(item: Result) {}
@@ -88,7 +74,7 @@ class CoinDetailRepository @Inject constructor(
 
         }.asFlow().flowOn(Dispatchers.IO)
     }
-
+*/
     /*fun fetchCoinHistory7d(id: Int) : LiveData<Resource<Data>>{
         return object : NetworkBoundResource<Data, Result>(appExecutors) {
             override fun saveCallResult(item: Result) {

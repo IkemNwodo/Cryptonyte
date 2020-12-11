@@ -8,7 +8,10 @@ import com.ikem.nwodo.cryptonyte.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import javax.inject.Singleton
 
+
+@Singleton
 class CoinListRemoteSource_impl @Inject constructor(val coinService: CoinService) {
 
     fun fetchCoins(): Flow<Resource<List<Coin>>> = flow {

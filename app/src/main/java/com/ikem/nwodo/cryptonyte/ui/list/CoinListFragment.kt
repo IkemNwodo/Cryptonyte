@@ -19,8 +19,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.ikem.nwodo.cryptonyte.R
 import com.ikem.nwodo.cryptonyte.databinding.CoinListFragmentBinding
 import com.ikem.nwodo.cryptonyte.data.local.db.model.Coin
-import com.ikem.nwodo.cryptonyte.data.local.db.model.CoinsWithHistory
-import com.ikem.nwodo.cryptonyte.data.local.db.model.Data
 import com.ikem.nwodo.cryptonyte.data.remote.network.api.CoinService
 import com.ikem.nwodo.cryptonyte.utils.CoinClickListener
 import com.ikem.nwodo.cryptonyte.utils.ConnectivityReceiver

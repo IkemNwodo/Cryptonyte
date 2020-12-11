@@ -44,14 +44,14 @@ class CoinDetailFragment : DaggerFragment(), CoinClickListener {
         // Toolbar
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.toolbar_coin_detail)
         // MaterialToggleButtonGroup listener
-        binding.toggleButtonGroup.addOnButtonCheckedListener { _, _, _ ->
+       /* binding.toggleButtonGroup.addOnButtonCheckedListener { _, _, _ ->
             when(binding.toggleButtonGroup.checkedButtonId){
-                R.id.day_history -> viewModel.coinHistory24h.observe(viewLifecycleOwner, Observer { binding.coinHistory = it.data?.history })
-                /*R.id.week_history -> viewModel.coinHistory7d.observe(viewLifecycleOwner, Observer { binding.historyData = it.data })
+                R.id.day_history -> viewModel.coinHistory24h.observe(viewLifecycleOwner, Observer { binding.coinHistory = it. })
+                *//*R.id.week_history -> viewModel.coinHistory7d.observe(viewLifecycleOwner, Observer { binding.historyData = it.data })
                 R.id.month_history -> viewModel.coinHistory30d.observe(viewLifecycleOwner, Observer { binding.historyData = it.data })
-                R.id.year_history -> viewModel.coinHistory1y.observe(viewLifecycleOwner, Observer { binding.historyData = it.data })*/
+                R.id.year_history -> viewModel.coinHistory1y.observe(viewLifecycleOwner, Observer { binding.historyData = it.data })*//*
             }
-        }
+        }*/
         return binding.root
     }
 
@@ -65,11 +65,11 @@ class CoinDetailFragment : DaggerFragment(), CoinClickListener {
         binding.recyclerView.scrollToPosition(args.coinId)
 
 
-        viewModel.coins.observe(viewLifecycleOwner, Observer { adapter.submitList(it.data) })
+        /*viewModel.coins.observe(viewLifecycleOwner, Observer { adapter.submitList(it.data) })
         viewModel.singleCoin.observe(viewLifecycleOwner, Observer { binding.coin = it.data })
         viewModel.coinHistory24h.observe(viewLifecycleOwner, Observer {
             binding.coinHistory = it.data?.history
-        })
+        })*/
 
         binding.recyclerView.adapter = adapter
 
@@ -83,9 +83,9 @@ class CoinDetailFragment : DaggerFragment(), CoinClickListener {
     }
 
     override fun onCoinClickListener(id: Int) {
-        viewModel.setId(id)
+       /* viewModel.setId(id)
         viewModel.singleCoin.observe(viewLifecycleOwner, Observer { binding.coin = it.data })
-        viewModel.coinHistory24h.observe(viewLifecycleOwner, Observer { binding.coinHistory = it.data?.history })
+        viewModel.coinHistory24h.observe(viewLifecycleOwner, Observer { binding.coinHistory = it.data?.history })*/
     }
 
 }

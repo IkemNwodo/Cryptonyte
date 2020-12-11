@@ -8,7 +8,7 @@ import com.ikem.nwodo.cryptonyte.data.local.db.model.CoinHistory24H
 import com.ikem.nwodo.cryptonyte.data.local.db.model.Data
 import com.ikem.nwodo.cryptonyte.data.local.db.model.History
 
-@Database(entities = [Coin::class, CoinHistory24H::class], version = 1)
+@Database(entities = [Coin::class, CoinHistory24H::class], version = 1, exportSchema = false)
 @TypeConverters(CoinTypeConverters::class)
 abstract class CoinDatabase : RoomDatabase(){
     abstract fun coinDao(): CoinDao

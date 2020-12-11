@@ -40,10 +40,8 @@ class CoinListAdapter(val coinClickListener: CoinClickListener) :
     override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
         val coin = getItem(position)
 
-        // Log.d("Coin History size", "${coinHistory?.size}")
-        //Log.i("Coin Id", "${coin.id}")
-
         holder.binding?.setVariable(BR.coin, coin)
+        Log.d("coinHistory", "${coin.histories}")
     }
 
     inner class CoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {

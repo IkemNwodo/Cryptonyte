@@ -119,7 +119,5 @@ data class Coin(
         @Expose
         val penalty: Boolean,
 
-        @SerializedName("history")
-        @Expose
-        val history: List<History>
+        var histories: List<History>? = null
 )

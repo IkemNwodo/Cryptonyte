@@ -1,42 +1,42 @@
 package com.ikem.nwodo.cryptonyte.repository
 
+import android.util.Log
 import com.ikem.nwodo.cryptonyte.data.local.db.model.Coin
 import com.ikem.nwodo.cryptonyte.data.local.source.coinList.CoinListLocalSource
 import com.ikem.nwodo.cryptonyte.data.remote.source.coinList.CoinListRemoteSource_impl
 import com.ikem.nwodo.cryptonyte.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class CoinListRepository @Inject constructor(
-        private val coinListLocalSource: CoinListLocalSource,
         private val coinlistremotesourceImpl: CoinListRemoteSource_impl
 ) : Repository {
 
     fun loadCoins(): Flow<Resource<List<Coin>>> =
             coinlistremotesourceImpl.fetchCoins()
-                .map { extractIdsAndFetchHistory(it) }.flowOn(Dispatchers.IO)
+                    .map { extractIdsAndFetchHistory(it) }.flowOn(Dispatchers.IO)
 
 
-    private suspend fun extractIdsAndFetchHistory(resource: Resource<List<Coin>>): Resource<List<Coin>> {
-       val coins = when(resource) {
-           is Resource.Success -> resource.data
-           else -> null
-       }
-        coins?.map { coin ->
-            coinlistremotesourceImpl.fetchCoinHistory(coin.id)
-                .collect {
-                    when(it) {
-                        is Resource.Success -> it.data?.let { history -> coin.copy( history = history) }
-                    }
+    private suspend fun extractIdsAndFetchHistory(resource: Resource<List<Coin>>): Resource<List<Coin>> = withContext(Dispatchers.IO){
+        val coins = when (resource) {
+            is Resource.Success -> resource.data
+            else -> null
+        }
+        coins?.map {
+            it.histories = when (val history = coinlistremotesourceImpl.fetchCoinHistory(it.id).first()) {
+                is Resource.Success -> {
+                    history.data
                 }
+                else -> null
+            }
         }
 
-        return Resource.Success(coins)
+        return@withContext Resource.Success(coins)
     }
-
 
 
     /*private fun fetchCoinHistory(id: Int): Flow<Resource<CoinHistory24H>> {

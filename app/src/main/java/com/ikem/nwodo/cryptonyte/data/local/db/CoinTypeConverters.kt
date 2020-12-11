@@ -42,19 +42,19 @@ object CoinTypeConverters {
     @TypeConverter
     @JvmStatic
     fun jsonToListCoin(value: String): List<Coin>?{
-        val objects = Gson().fromJson(value, Array<Coin>::class.java) as Array<Coin>?
+        val objects = Gson().fromJson(value, Array<Coin>::class.java)
         return objects?.toList()
     }
 
     @TypeConverter
     @JvmStatic
-    fun HistorylistToJson(value: List<History>?): String{
+    fun HistorylistToJson(value: List<History>): String{
         return Gson().toJson(value)
     }
 
     @TypeConverter
     @JvmStatic
-    fun jsonToListHistory(value: String): List<History>?{
+    fun jsonToListHistory(value: String): List<History>{
         val objects = Gson().fromJson(value, Array<History>::class.java) as Array<History>
         return objects.toList()
     }

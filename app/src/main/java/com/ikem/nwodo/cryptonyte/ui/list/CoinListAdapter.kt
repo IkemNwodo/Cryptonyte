@@ -12,10 +12,9 @@ import com.ikem.nwodo.cryptonyte.BR
 import com.ikem.nwodo.cryptonyte.R
 import com.ikem.nwodo.cryptonyte.databinding.CoinListRvCardBinding
 import com.ikem.nwodo.cryptonyte.data.local.db.model.Coin
-import com.ikem.nwodo.cryptonyte.data.local.db.model.History
-import com.ikem.nwodo.cryptonyte.utils.CoinClickListener
+import com.ikem.nwodo.cryptonyte.utils.CoinListHandler
 
-class CoinListAdapter(val coinClickListener: CoinClickListener) :
+class CoinListAdapter(val coinListListHandler: CoinListHandler) :
         ListAdapter<Coin, CoinListAdapter.CoinViewHolder>(object : DiffUtil.ItemCallback<Coin>() {
             override fun areItemsTheSame(oldItem: Coin, newItem: Coin): Boolean {
                 return oldItem.id == newItem.id
@@ -53,7 +52,7 @@ class CoinListAdapter(val coinClickListener: CoinClickListener) :
             binding = DataBindingUtil.bind(itemView)
         }
         override fun onClick(v: View?) {
-            coinClickListener.onCoinClickListener(getItem(adapterPosition).id)
+            coinListListHandler.onCoinClick(getItem(adapterPosition).id)
         }
     }
 }

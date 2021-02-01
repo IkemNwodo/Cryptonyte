@@ -18,10 +18,13 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.EntryXComparator
 import com.ikem.nwodo.cryptonyte.R
-import com.ikem.nwodo.cryptonyte.db.model.History
+import com.ikem.nwodo.cryptonyte.data.local.db.model.History
 import com.ikem.nwodo.cryptonyte.utils.graph.MyXAxisValueFormatter
 import com.ikem.nwodo.cryptonyte.utils.graph.MyYAxisValueFormatter
 import com.ikem.nwodo.cryptonyte.utils.svg.SvgSoftwareLayerSetter
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.Observable
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -109,20 +112,22 @@ object BindingAdapters {
         val rightAxis = lineChart.axisRight
         rightAxis.isEnabled = false
 
-        /**Observable.fromCallable { getData(coinHistory) }
+
+        lineChart.fitScreen()
+
+        Observable.fromCallable { getData(coinHistory) }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe{ lineChart.data = it }
-*/
-        lineChart.fitScreen()
-        lineChart.data = getData(coinHistory)
+
         lineChart.invalidate()
 
     }
 
     @JvmStatic
     @BindingAdapter(value = ["app:setCoinListChartData", "app:chartViewportColor"], requireAll = true)
-    fun setCoinListChartData(lineChart: LineChart, coinHistory: List<History>?, coinColor: String){
+    fun setCoinListChartData(lineChart: LineChart, coinHistory: List<History>?, coinColor: String?){
+        Log.i("Coin History", "$coinHistory")
 
         lineChart.description.isEnabled = false
 
@@ -171,20 +176,21 @@ object BindingAdapters {
         val rightAxis = lineChart.axisRight
         rightAxis.isEnabled = false
 
-        /**Observable.fromCallable { getData(coinHistory) }
+        lineChart.fitScreen()
+
+        Observable.fromCallable { getDataCoinList(coinHistory, coinColor) }
         .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe{ lineChart.data = it }
-         */
-        lineChart.fitScreen()
-        lineChart.data = getDataCoinList(coinHistory, coinColor)
-        lineChart.invalidate()
+
+
+        //lineChart.data = getDataCoinList(coinHistory, coinColor)
+        //lineChart.invalidate()
 
     }
-    private fun getDataCoinList(coinHistory: List<History>?, coinColor: String): LineData? {
+    private fun getDataCoinList(coinHistory: List<History>?, coinColor: String?): LineData? {
         val entries = ArrayList<Entry>()
 
-        //Log.i("Coin History", "${coinHistory == null}")
         if (coinHistory != null) {
             for (element in coinHistory) {
                 val minute = element.timestamp.toFloat()
@@ -200,8 +206,8 @@ object BindingAdapters {
         // create a dataset and give it a type
         val set1 = LineDataSet(entries, "DataSet 1")
         set1.axisDependency = YAxis.AxisDependency.LEFT
-        val color = if(coinColor == null || coinColor.length < 7)"#000000" else coinColor
-        set1.color = Color.parseColor(color)
+        //val color = if(coinColor == null || coinColor.length < 7)"#000000" else coinColor
+        //set1.color = Color.parseColor(color)
         set1.valueTextColor = ColorTemplate.getHoloBlue()
         set1.lineWidth = 2.5f
         set1.setDrawCircles(false)

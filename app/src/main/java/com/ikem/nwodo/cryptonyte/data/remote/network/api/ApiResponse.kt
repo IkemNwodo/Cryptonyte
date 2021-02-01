@@ -1,4 +1,4 @@
-package com.ikem.nwodo.cryptonyte.network.api
+package com.ikem.nwodo.cryptonyte.data.remote.network.api
 
 import retrofit2.Response
 import java.io.IOException

@@ -1,4 +1,4 @@
-package com.ikem.nwodo.cryptonyte.db.model
+package com.ikem.nwodo.cryptonyte.data.local.db.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -4,22 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <import type="com.ikem.nwodo.cryptonyte.utils.Resource" />
-
-        <import type="java.util.List" />
-
-        <import type="com.ikem.nwodo.cryptonyte.db.model.Coin" />
-
-        <import type="com.ikem.nwodo.cryptonyte.utils.Status" />
-
-        <import type="android.view.View" />
-
-
-        <variable
-            name="resource"
-            type="Resource&lt;List&lt;Coin>>" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,9 +21,10 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/coinList_recycler"
+                android:id="@+id/coin_list_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:paddingStart="@dimen/coin_list_spacing"
                 android:paddingEnd="@dimen/coin_list_spacing"
                 app:layout_constraintBottom_toBottomOf="@id/swipe_refresh"
@@ -59,6 +44,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:visibility="@{resource.status == Status.LOADING ? View.VISIBLE : View.GONE}" />
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -11,11 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ikem.nwodo.cryptonyte.BR
 import com.ikem.nwodo.cryptonyte.R
 import com.ikem.nwodo.cryptonyte.databinding.CoinListRvCardBinding
-import com.ikem.nwodo.cryptonyte.db.model.Coin
-import com.ikem.nwodo.cryptonyte.db.model.History
-import com.ikem.nwodo.cryptonyte.utils.CoinClickListener
+import com.ikem.nwodo.cryptonyte.data.local.db.model.Coin
+import com.ikem.nwodo.cryptonyte.utils.CoinListHandler
 
-class CoinListAdapter(val coinClickListener: CoinClickListener) :
+class CoinListAdapter(val coinListListHandler: CoinListHandler) :
         ListAdapter<Coin, CoinListAdapter.CoinViewHolder>(object : DiffUtil.ItemCallback<Coin>() {
             override fun areItemsTheSame(oldItem: Coin, newItem: Coin): Boolean {
                 return oldItem.id == newItem.id
@@ -26,7 +25,6 @@ class CoinListAdapter(val coinClickListener: CoinClickListener) :
             }
         })
 {
-        var coinHistory: List<History>? = listOf()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinViewHolder {
@@ -41,18 +39,10 @@ class CoinListAdapter(val coinClickListener: CoinClickListener) :
     override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
         val coin = getItem(position)
 
-        coinClickListener.onCoinHistoryListener(coin.id)
-        // Log.d("Coin History size", "${coinHistory?.size}")
-        Log.i("Coin Id", "${coin.id}")
-
         holder.binding?.setVariable(BR.coin, coin)
-        holder.binding?.setVariable(BR.coinHistory, coinHistory)
-        holder.binding?.executePendingBindings()
+        Log.d("coinHistory", "${coin.histories}")
     }
 
-    fun setCoinHistories(history: List<History>?){
-        coinHistory = history
-    }
     inner class CoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         internal var binding:CoinListRvCardBinding?
@@ -62,7 +52,7 @@ class CoinListAdapter(val coinClickListener: CoinClickListener) :
             binding = DataBindingUtil.bind(itemView)
         }
         override fun onClick(v: View?) {
-            coinClickListener.onCoinClickListener(getItem(adapterPosition).id)
+            coinListListHandler.onCoinClick(getItem(adapterPosition).id)
         }
     }
 }

@@ -24,9 +24,6 @@
             android:name="coinId"
             app:argType="integer"
             android:defaultValue="1"/>
-        <action
-            android:id="@+id/action_coinDetailFragment_to_coinListFragment"
-            app:destination="@id/coinListFragment" />
 
     </fragment>
 

@@ -1,15 +1,15 @@
-package com.ikem.nwodo.cryptonyte.db.model
+package com.ikem.nwodo.cryptonyte.data.local.db.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 class Result (
 
-    @SerializedName("data")
+        @SerializedName("data")
     @Expose
     var data: Data,
 
-    @SerializedName("status")
+        @SerializedName("status")
     @Expose
     var status: String? = null
 )

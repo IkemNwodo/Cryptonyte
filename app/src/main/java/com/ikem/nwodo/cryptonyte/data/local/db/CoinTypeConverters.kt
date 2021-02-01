@@ -1,10 +1,10 @@
-package com.ikem.nwodo.cryptonyte.db
+package com.ikem.nwodo.cryptonyte.data.local.db
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.ikem.nwodo.cryptonyte.db.model.Coin
-import com.ikem.nwodo.cryptonyte.db.model.History
-import com.ikem.nwodo.cryptonyte.db.model.Social
+import com.ikem.nwodo.cryptonyte.data.local.db.model.Coin
+import com.ikem.nwodo.cryptonyte.data.local.db.model.History
+import com.ikem.nwodo.cryptonyte.data.local.db.model.Social
 
 object CoinTypeConverters {
 
@@ -42,19 +42,19 @@ object CoinTypeConverters {
     @TypeConverter
     @JvmStatic
     fun jsonToListCoin(value: String): List<Coin>?{
-        val objects = Gson().fromJson(value, Array<Coin>::class.java) as Array<Coin>?
+        val objects = Gson().fromJson(value, Array<Coin>::class.java)
         return objects?.toList()
     }
 
     @TypeConverter
     @JvmStatic
-    fun HistorylistToJson(value: List<History>?): String{
+    fun HistorylistToJson(value: List<History>): String{
         return Gson().toJson(value)
     }
 
     @TypeConverter
     @JvmStatic
-    fun jsonToListHistory(value: String): List<History>?{
+    fun jsonToListHistory(value: String): List<History>{
         val objects = Gson().fromJson(value, Array<History>::class.java) as Array<History>
         return objects.toList()
     }

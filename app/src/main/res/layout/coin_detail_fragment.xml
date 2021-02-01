@@ -6,15 +6,17 @@
     <data>
         <import type="com.ikem.nwodo.cryptonyte.utils.graph.NumberFormatter" />
 
+        <import type="java.util.List" />
+        <import type="com.ikem.nwodo.cryptonyte.data.local.db.model.History"/>
+
         <variable
             name="coinHistory"
-            type="com.ikem.nwodo.cryptonyte.db.model.History" />
-        <variable
-            name="historyData"
-            type="com.ikem.nwodo.cryptonyte.db.model.Data" />
+            type= "List&lt;History>" />
+
         <variable
             name="coin"
-            type="com.ikem.nwodo.cryptonyte.db.model.Coin" />
+            type="com.ikem.nwodo.cryptonyte.data.local.db.model.Coin" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -134,9 +136,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:text="@{NumberFormatter.priceFormatter(coin.price)}"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:text="@{NumberFormatter.priceFormatter(coin.price)}"
             app:layout_constraintBaseline_toBaselineOf="@+id/coin_symbol"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="$4702" />
@@ -162,7 +164,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toggle_button_group"
-            app:setChartData="@{historyData.coinHistory}" />
+            app:setChartData="@{coinHistory}" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"

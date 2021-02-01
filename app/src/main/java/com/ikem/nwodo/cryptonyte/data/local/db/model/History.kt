@@ -1,4 +1,4 @@
-package com.ikem.nwodo.cryptonyte.db.model
+package com.ikem.nwodo.cryptonyte.data.local.db.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -17,6 +17,4 @@ data class History(
     @Expose
     val timestamp: Long,
 
-    @PrimaryKey(autoGenerate = true)
-    val history_id: Int = 0
 )

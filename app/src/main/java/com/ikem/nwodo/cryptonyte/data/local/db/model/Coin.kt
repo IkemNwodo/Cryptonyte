@@ -1,12 +1,13 @@
-package com.ikem.nwodo.cryptonyte.db.model
+package com.ikem.nwodo.cryptonyte.data.local.db.model
 
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.ikem.nwodo.cryptonyte.db.model.AllTimeHigh
-import com.ikem.nwodo.cryptonyte.db.model.Social
+import com.ikem.nwodo.cryptonyte.data.local.db.model.AllTimeHigh
+import com.ikem.nwodo.cryptonyte.data.local.db.model.Social
 
 /**
  * @author Ikem Nwodo
@@ -109,10 +110,6 @@ data class Coin(
         @Expose
         val rank: Long,
 
-        @SerializedName("history")
-        @Expose
-        val history: List<String>,
-
         @SerializedName("allTimeHigh")
         @Expose
         @Embedded
@@ -120,7 +117,7 @@ data class Coin(
 
         @SerializedName("penalty")
         @Expose
-        val penalty: Boolean
+        val penalty: Boolean,
 
-
+        var histories: List<History>? = null
 )

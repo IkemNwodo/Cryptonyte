@@ -1,70 +1,76 @@
 package com.ikem.nwodo.cryptonyte.repository
 
-import androidx.lifecycle.LiveData
-import com.ikem.nwodo.cryptonyte.db.CoinDao
-import com.ikem.nwodo.cryptonyte.db.model.Coin
-import com.ikem.nwodo.cryptonyte.db.model.Data
-import com.ikem.nwodo.cryptonyte.db.model.Result
-import com.ikem.nwodo.cryptonyte.network.api.CoinService
-import com.ikem.nwodo.cryptonyte.ui.list.RateLimiter
-import com.ikem.nwodo.cryptonyte.utils.AppExecutors
-import com.ikem.nwodo.cryptonyte.utils.NetworkBoundResource
+import android.util.Log
+import com.ikem.nwodo.cryptonyte.data.local.db.model.Coin
+import com.ikem.nwodo.cryptonyte.data.local.source.coinList.CoinListLocalSource
+import com.ikem.nwodo.cryptonyte.data.remote.source.coinList.CoinListRemoteSource_impl
 import com.ikem.nwodo.cryptonyte.utils.Resource
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class CoinListRepository @Inject constructor(
-        private val appExecutors: AppExecutors,
-        private val coinListDao: CoinDao,
-        private val coinService: CoinService
-) {
-    private val coinListRateLimiter = RateLimiter<Int>(1, TimeUnit.MINUTES)
-    fun loadCoins(): LiveData<Resource<List<Coin>>> {
-        return object : NetworkBoundResource<List<Coin>, Result>(appExecutors) {
+        private val coinlistremotesourceImpl: CoinListRemoteSource_impl
+) : Repository {
 
-            override fun saveCallResult(item: Result) {
-                item.data.coins?.let { coinListDao.insertCoins(it) }
+    fun loadCoins(): Flow<Resource<List<Coin>>> =
+            coinlistremotesourceImpl.fetchCoins()
+                    .map { extractIdsAndFetchHistory(it) }.flowOn(Dispatchers.IO)
+
+
+    private suspend fun extractIdsAndFetchHistory(resource: Resource<List<Coin>>): Resource<List<Coin>> = withContext(Dispatchers.IO){
+        val coins = when (resource) {
+            is Resource.Success -> resource.data
+            else -> null
+        }
+        coins?.map {
+            it.histories = when (val history = coinlistremotesourceImpl.fetchCoinHistory(it.id).first()) {
+                is Resource.Success -> {
+                    history.data
+                }
+                else -> null
             }
+        }
 
-            override fun shouldFetch(data: List<Coin>?): Boolean {
-                return data == null || data.isEmpty() || coinListRateLimiter.shouldFetch(0)
-            }
-
-            override fun loadFromDb(): LiveData<List<Coin>> {
-                return coinListDao.loadCoins()
-            }
-
-            override fun createCall(): LiveData<Resource<Result>> {
-                return coinService.cryptoCurrencies()
-            }
-
-        }.asLiveData()
+        return@withContext Resource.Success(coins)
     }
 
-    fun fetchCoinHistory(id: Int): LiveData<Resource<Data>> {
-        return object : NetworkBoundResource<Data, Result>(appExecutors) {
-            override fun saveCallResult(item: Result) {
-                val modify = item.data
-                modify.timeFrame = "24h"
-                modify.historyId = id
-                coinListDao.insertCoinHistory(modify)
+
+    /*private fun fetchCoinHistory(id: Int): Flow<Resource<CoinHistory24H>> {
+        return object : NetworkBoundResource<CoinHistory24H, Result>() {
+            override suspend fun saveCallResult(item: Result) {
+                val coinHistory24H = CoinHistory24H(item.data.coinHistory, id)
+                coinListDao.insertCoinHistory(coinHistory24H)
             }
 
-            override fun shouldFetch(data: Data?): Boolean {
-                return data == null || coinListRateLimiter.shouldFetch(id)
+            override fun loadFromDb(): Flow<CoinHistory24H> {
+                return coinListDao.loadCoinHistory24H(id)
             }
 
-            override fun loadFromDb(): LiveData<Data> {
-                return coinListDao.loadCoinHistory(id, "24h")
+            override fun shouldLoadDb(): Boolean {
+                return true
             }
 
-            override fun createCall(): LiveData<Resource<Result>> {
+            override suspend fun createCall(): Flow<Resource<Result>> {
                 return coinService.getCoinHistory24h(id)
             }
 
-        }.asLiveData()
+        }.asFlow().flowOn(Dispatchers.IO)
     }
 
+    fun fetchCoinsWithHistory() = flow<Resource<List<Coin>>> {
+
+        emit(Resource.loading())
+
+        val coins = loadCoins().first().data
+        coins?.map {
+            val history24H = fetchCoinHistory(it.id).first().data!!
+            it.history = history24H
+            it
+        }
+        emit(Resource.success(coins))
+    }*/
 }

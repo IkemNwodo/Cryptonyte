@@ -7,10 +7,9 @@ import androidx.room.Room
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.ikem.nwodo.cryptonyte.db.CoinDao
-import com.ikem.nwodo.cryptonyte.db.CoinDatabase
-import com.ikem.nwodo.cryptonyte.network.LiveDataCallAdapterFactory
-import com.ikem.nwodo.cryptonyte.network.api.CoinService
+import com.ikem.nwodo.cryptonyte.data.local.db.CoinDao
+import com.ikem.nwodo.cryptonyte.data.local.db.CoinDatabase
+import com.ikem.nwodo.cryptonyte.data.remote.network.api.CoinService
 import com.ikem.nwodo.cryptonyte.utils.Constants
 
 import javax.inject.Singleton
@@ -20,8 +19,7 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.ikem.nwodo.cryptonyte.network.RequestInterceptor
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import okhttp3.logging.HttpLoggingInterceptor
 
 @Module
 class AppModule {
@@ -45,18 +43,17 @@ class AppModule {
         return Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(LiveDataCallAdapterFactory())
                 .client(okHttpClient)
                 .build()
-
     }
 
     @Singleton
     @Provides
     fun provideOkHttpclient(): OkHttpClient{
-        val requestInterceptor = RequestInterceptor()
+        val httpLoggingInterceptor = HttpLoggingInterceptor()
+        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         return OkHttpClient.Builder()
-                .addInterceptor(requestInterceptor)
+                .addInterceptor(httpLoggingInterceptor)
                 .build()
     }
 
@@ -81,10 +78,4 @@ class AppModule {
     fun providesCoinDao(coinDatabase: CoinDatabase): CoinDao {
         return coinDatabase.coinDao()
     }
-    /**
-     * @Provides
-     * public GsonConverterFactory gsonConverterFactory(Gson gson){
-     * return GsonConverterFactory.create(gson);
-     * }
-     */
 }

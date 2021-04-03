@@ -1,0 +1,1 @@
+C:\Users\Ikem\StudioProjects\Cryptonyte\buildSrc\build\classes\kotlin\main\Deps.class;C:\Users\Ikem\StudioProjects\Cryptonyte\buildSrc\build\classes\kotlin\main\Versions.class

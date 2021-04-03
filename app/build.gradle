@@ -45,76 +45,50 @@ android {
 }
 
 dependencies {
-    def lifecycle_version = "2.2.0"
 
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.exifinterface:exifinterface:1.3.1'
-    implementation 'com.google.android.material:material:1.3.0-alpha04'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation 'androidx.test:runner:1.3.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation Deps.androidx_core_ktx
+    implementation Deps.androidx_app_compact
+    implementation Deps.material_design
+    implementation Deps.constraint_layout
+    implementation Deps.androidx_legacy_support
+    implementation Deps.recycler_view
+
+    implementation Deps.mpAndroid_chart
+
+    testImplementation Deps.junit
 
     // Architecture components
-    implementation 'androidx.room:room-runtime:2.2.5'
-    kapt 'androidx.room:room-compiler:2.2.5'
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-
-    kapt 'androidx.lifecycle:lifecycle-compiler:2.2.0'
-
-    implementation("com.squareup.okhttp3:okhttp:4.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
-
-
-    // Retrofit and Rx
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.7'
-
-    // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.0"
-
-    // Network
-
-    // optional - Kotlin Extensions and Coroutines support for Room
-    implementation "androidx.room:room-ktx:2.2.5"
-
-    // Charts
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
-
-    // SVG
-    implementation 'com.caverock:androidsvg-aar:1.4'
+    implementation Deps.livedata_ktx
+    implementation Deps.viewmodel_ktx
+    implementation Deps.fragment_ktx
 
     //Glide
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
-    // Skip this if you don't want to use integration libraries or configure Glide.
-    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation Deps.glide
+    kapt Deps.glide_compiler
 
 
-    // Dagger
-    implementation 'com.google.dagger:dagger:2.30'
-    kapt 'com.google.dagger:dagger-compiler:2.23.2'
-    implementation "com.google.dagger:dagger-android:2.23.2"
-    implementation "com.google.dagger:dagger-android-support:2.23.2"
-    kapt "com.google.dagger:dagger-android-processor:2.23.2"
-    implementation "android.arch.lifecycle:reactivestreams:1.1.1"
+    implementation Deps.hilt_android
+    kapt Deps.hilt_android_compiler
+
+    implementation Deps.hilt_jetpack_version
+    kapt Deps.hilt_jetpack_version_compiler
+
+    implementation Deps.retrofit
+    implementation Deps.retrofit_converter
+
+    implementation Deps.room
+    implementation Deps.room_ktx
+    kapt Deps.room_compiler
 
     // Multidex
     implementation 'com.android.support:multidex:1.0.3'
 
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation Deps.kotlin_stdlib
 
     // Navigation
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
+    implementation Deps.nav_fragment
+    implementation Deps.nav_ktx
 
 
 }

@@ -8,7 +8,7 @@ import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.ikem.nwodo.cryptonyte.data.local.db.CoinDao
-import com.ikem.nwodo.cryptonyte.data.local.db.CoinDatabase
+import com.ikem.data.local.room.CoinDatabase
 import com.ikem.nwodo.cryptonyte.data.remote.network.api.CoinService
 import com.ikem.nwodo.cryptonyte.utils.Constants
 
@@ -66,16 +66,16 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun providesCoinDatabase(application: Application): CoinDatabase {
+    fun providesCoinDatabase(application: Application): com.ikem.data.local.room.CoinDatabase {
         return Room
-                .databaseBuilder(application, CoinDatabase::class.java, "coin_database")
+                .databaseBuilder(application, com.ikem.data.local.room.CoinDatabase::class.java, "coin_database")
                 .fallbackToDestructiveMigration()
                 .build()
     }
 
     @Singleton
     @Provides
-    fun providesCoinDao(coinDatabase: CoinDatabase): CoinDao {
+    fun providesCoinDao(coinDatabase: com.ikem.data.local.room.CoinDatabase): CoinDao {
         return coinDatabase.coinDao()
     }
 }

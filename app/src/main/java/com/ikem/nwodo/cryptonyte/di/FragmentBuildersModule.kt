@@ -1,7 +1,7 @@
 package com.ikem.nwodo.cryptonyte.di
 
 import com.ikem.nwodo.cryptonyte.ui.detail.CoinDetailFragment
-import com.ikem.nwodo.cryptonyte.ui.list.CoinListFragment
+import com.ikem.home.ui.CoinListFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -9,7 +9,7 @@ import dagger.android.ContributesAndroidInjector
 abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
-    abstract fun contributeCoinListFragment(): CoinListFragment
+    abstract fun contributeCoinListFragment(): com.ikem.home.ui.CoinListFragment
 
     @ContributesAndroidInjector
     abstract fun contributeCoinDetailFragment(): CoinDetailFragment

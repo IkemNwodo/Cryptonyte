@@ -73,9 +73,6 @@ dependencies {
     implementation Deps.hilt_jetpack_version
     kapt Deps.hilt_jetpack_version_compiler
 
-    implementation Deps.retrofit
-    implementation Deps.retrofit_converter
-
     implementation Deps.room
     implementation Deps.room_ktx
     kapt Deps.room_compiler

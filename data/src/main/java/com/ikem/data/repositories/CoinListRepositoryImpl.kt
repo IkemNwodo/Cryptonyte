@@ -1,10 +1,9 @@
 package com.ikem.data.repositories
 
-import android.util.Log
 import com.ikem.nwodo.cryptonyte.data.local.db.model.Coin
 import com.ikem.nwodo.cryptonyte.data.local.source.coinList.CoinListLocalSource
 import com.ikem.nwodo.cryptonyte.data.remote.source.coinList.CoinListRemoteSource_impl
-import com.ikem.nwodo.cryptonyte.utils.Resource
+import com.ikem.shared.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext

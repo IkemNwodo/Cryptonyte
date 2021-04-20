@@ -16,8 +16,15 @@ object Versions {
     val junit_ext = "1.1.1"
     val espresso_core = "3.2.0"
 
-    val coroutines = "1.3.7"
+    // Network
     val retrofit = "2.9.0"
+    val okHttp = "3.12.1"
+    val moshiVersion = "1.11.0"
+    val logginInterceptor = "4.7.2"
+    val retrofitMoshi = "2.6.2"
+
+
+    val coroutines = "1.3.7"
     val constraint_layout = "2.0.4"
     val androidx_app_compact = "1.2.0"
     val hilt_version = "2.31.2-alpha"
@@ -48,10 +55,20 @@ object Deps {
     val material_design = "com.google.android.material:material:${Versions.material_version}"
     val recycler_view = "androidx.recyclerview:recyclerview:${Versions.recycler_view}"
     val lifecycle_extensions = "android.arch.lifecycle:extensions:${Versions.lifecycle_ext}"
-    val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
-    val retrofit_converter = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
+
+    // Glide
     val glide = "com.github.bumptech.glide:glide:${Versions.glide_version}"
     val glide_compiler = "com.github.bumptech.glide:compiler:${Versions.glide_version}"
+
+    // retrofit
+    val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
+    val retrofitMoshiConverter = "com.squareup.retrofit2:converter-moshi:${Versions.retrofitMoshi}"
+    val httpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.logginInterceptor}"
+    val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
+
+    // moshi
+    val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${Versions.moshiVersion}"
+    val moshiKotlinCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshiVersion}"
 
     val mpAndroid_chart = "com.github.PhilJay:MPAndroidChart:${Versions.chart}"
 
@@ -67,9 +84,6 @@ object Deps {
     val constraint_layout =
             "androidx.constraintlayout:constraintlayout:${Versions.constraint_layout}"
     val androidx_app_compact = "androidx.appcompat:appcompat:${Versions.androidx_app_compact}"
-    val junit = "junit:junit:${Versions.junit}"
-    val junit_ext = "androidx.test.ext:junit:${Versions.junit_ext}"
-    val espresso_core = "androidx.test.espresso:espresso-core:${Versions.espresso_core}"
     val vector_drawable = "androidx.vectordrawable:vectordrawable:${Versions.vector_drawable}"
     val kotlin_coroutines =
             "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
@@ -77,12 +91,20 @@ object Deps {
             "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle_version}"
     val livedata_ktx = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle_version}"
 
+    // DAGGER HILT
     val hilt_android = "com.google.dagger:hilt-android:${Versions.hilt_version}"
     val hilt_android_compiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt_version}"
     val hilt_plugin = "com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt_version}"
     val hilt_jetpack_version = "androidx.hilt:hilt-lifecycle-viewmodel:${Versions.hilt_jetpack_version}"
     val hilt_jetpack_version_compiler = "androidx.hilt:hilt-compiler:${Versions.hilt_jetpack_version}"
 
+    // NAVIGATION
     val nav_fragment = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
     val nav_ktx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
+
+    // TEST
+    val junit = "junit:junit:${Versions.junit}"
+    val junit_ext = "androidx.test.ext:junit:${Versions.junit_ext}"
+    val espresso_core = "androidx.test.espresso:espresso-core:${Versions.espresso_core}"
+
 }

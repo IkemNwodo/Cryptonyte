@@ -1,6 +1,5 @@
-package com.ikem.nwodo.cryptonyte.utils
+package com.ikem.shared.utils
 
-import com.ikem.nwodo.cryptonyte.utils.Status.*
 /**
  * A generic class that holds a value with its loading status.
  * @param <T>
